@@ -1,9 +1,13 @@
-﻿namespace Runtime;
+﻿using EngineAPI;
+
+namespace PrincipleRuntime;
 
 public class Program
 {
     static void Main(string[] args)
     {
-        Console.WriteLine("Hello, World!");
+        Application myApp = new Application();
+        myApp.Initialize();
+        myApp.Run();
     }
 }
