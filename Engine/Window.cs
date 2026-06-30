@@ -1,5 +1,6 @@
 ﻿using Silk.NET.Input;
 using Silk.NET.Windowing;
+using System.Drawing;
 
 namespace EngineAPI;
 
@@ -7,6 +8,7 @@ public class Window
 {
     private IWindow _activeWindow;
     private WindowInputContext _inputContext;
+    private Renderer _renderer;
 
     public Window(string title, int width, int height)
     {
@@ -40,6 +42,9 @@ public class Window
         _inputContext.RegisterInputs();
 
         _inputContext.KeyPressed += HandleKeyPressed;
+
+        _renderer = new Renderer(_activeWindow);
+        _renderer.SetClearColor(Color.Red);
     }
 
     private void HandleUpdate(double dt)
@@ -49,7 +54,8 @@ public class Window
 
     private void HandleRender(double dt)
     {
-
+        _renderer.ClearColorBufferBit();
+        _renderer.Render();
     }
 
     private void HandleKeyPressed(object? sender, Key key)
