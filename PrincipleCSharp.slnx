@@ -1,3 +1,5 @@
 <Solution>
   <Project Path="Engine/Engine.csproj" />
+  <Project Path="ExampleProject/ExampleProject.csproj" />
+  <Project Path="Runtime/Runtime.csproj" />
 </Solution>
