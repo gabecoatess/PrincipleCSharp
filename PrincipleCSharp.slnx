@@ -1,5 +1,7 @@
 <Solution>
-  <Project Path="Engine/EngineAPI.csproj" />
+  <Project Path="Engine/Principle.API.csproj" />
   <Project Path="ExampleProject/ExampleProject.csproj" />
-  <Project Path="Runtime/PrincipleRuntime.csproj" />
+  <Project Path="Principle.Input/Principle.Input.csproj" Id="f895c2e7-fd46-4c4e-b159-aa4a977ca40b" />
+  <Project Path="Principle.Renderer/Principle.Renderer.csproj" Id="09f2bb34-7af7-486a-bca8-ff3469923769" />
+  <Project Path="Runtime/Principle.Runtime.csproj" />
 </Solution>

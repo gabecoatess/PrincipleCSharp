@@ -1,6 +1,6 @@
 ﻿using Silk.NET.Input;
 
-namespace EngineAPI;
+namespace Principle.Input;
 
 public class WindowInputContext(IInputContext inputContext)
 {

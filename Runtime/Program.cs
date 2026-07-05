@@ -1,19 +1,15 @@
-﻿using EngineAPI;
+﻿using Principle.API.Renderer;
 
-namespace PrincipleRuntime;
+namespace Principle.Runtime;
 
 public class Program
 {
     static void Main(string[] args)
     {
-        string appName = "PrincipleEngine";
-        int x = 800;
-        int y = 600;
-
         Application myApp = new Application();
         myApp.Initialize();
-        myApp.Run();
+        myApp.BuildSurface(RenderSurfaceOptions.Default);
 
-        myApp.BuildWindow(appName, x, y);
+        myApp.Run();
     }
 }

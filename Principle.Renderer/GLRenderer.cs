@@ -1,35 +1,43 @@
-﻿using Silk.NET.OpenGL;
-using Silk.NET.Windowing;
+﻿using Principle.API.Renderer;
+using Silk.NET.OpenGL;
 using System.Drawing;
 
-namespace EngineAPI;
+namespace Principle.Renderer;
 
-public class Renderer
+public sealed class GLRenderer(GL glContext) : IRenderer
 {
-    private GL? _openGl;
+    private bool _initialized = false;
+
+    private GL _openGl = glContext;
     private uint _vertexBufferArray;
     private uint _elementBufferObject;
     private uint _activeShaderProgram;
 
     private const uint positionLoc = 0;
 
-    public unsafe Renderer(IWindow window)
+    public bool Initialized => _initialized;
+
+    public unsafe void Initialize()
     {
-        _openGl = window.CreateOpenGL();
+        _initialized = true;
+
+        SetClearColor(Color.YellowGreen);
+
         _vertexBufferArray = _openGl.GenVertexArray();
         _openGl.BindVertexArray(_vertexBufferArray);
 
         _elementBufferObject = _openGl.GenBuffer();
         _openGl.BindBuffer(BufferTargetARB.ElementArrayBuffer, _elementBufferObject);
 
-        Triangle.New(this);
-
         var _activeVertexShader = _openGl.CreateShader(ShaderType.VertexShader);
         var _activeFragmentShader = _openGl.CreateShader(ShaderType.FragmentShader);
 
         try
         {
-            string vertexShaderSource = File.ReadAllText(Path.Combine(AppContext.BaseDirectory, "assets/shaders/base_vertex.glsl"));
+            var assembly = typeof(GLRenderer).Assembly;
+            using var stream = assembly.GetManifestResourceStream("Principle.Renderer.Shaders.base_vertex.glsl");
+            using var reader = new StreamReader(stream!);
+            string vertexShaderSource = reader.ReadToEnd();
             _openGl.ShaderSource(_activeVertexShader, vertexShaderSource);
             _openGl.CompileShader(_activeVertexShader);
 
@@ -45,7 +53,10 @@ public class Renderer
 
         try
         {
-            string fragmentShaderSource = File.ReadAllText(Path.Combine(AppContext.BaseDirectory, "assets/shaders/base_fragment.glsl"));
+            var assembly = typeof(GLRenderer).Assembly;
+            using var stream = assembly.GetManifestResourceStream("Principle.Renderer.Shaders.base_fragment.glsl");
+            using var reader = new StreamReader(stream!);
+            string fragmentShaderSource = reader.ReadToEnd();
             _openGl.ShaderSource(_activeFragmentShader, fragmentShaderSource);
             _openGl.CompileShader(_activeFragmentShader);
 
@@ -86,36 +97,41 @@ public class Renderer
 
     public unsafe void Render()
     {
-        _openGl!.BindVertexArray(_vertexBufferArray);
-        _openGl!.UseProgram(_activeShaderProgram);
-        _openGl!.DrawElements(PrimitiveType.Triangles, 6, DrawElementsType.UnsignedInt, (void*)0);
+        if (_initialized == false)
+        {
+            throw new RendererNotInitializedException();
+        }
+
+        _openGl.BindVertexArray(_vertexBufferArray);
+        _openGl.UseProgram(_activeShaderProgram);
+        _openGl.DrawElements(PrimitiveType.Triangles, 6, DrawElementsType.UnsignedInt, (void*)0);
     }
 
     public void SetClearColor(Color clearColor)
     {
-        if (_openGl == null)
+        if (_initialized == false)
         {
-            throw new Exception("OpenGL has not been initialized!");
+            throw new RendererNotInitializedException();
         }
 
-        _openGl?.ClearColor(clearColor);
+        _openGl.ClearColor(clearColor);
     }
 
-    public void ClearColorBufferBit()
+    public void ClearColor ()
     {
-        if (_openGl == null)
+        if (_initialized == false)
         {
-            throw new Exception("OpenGL has not been initialized!");
+            throw new RendererNotInitializedException();
         }
 
-        _openGl?.Clear(ClearBufferMask.ColorBufferBit);
+        _openGl.Clear(ClearBufferMask.ColorBufferBit);
     }
 
     public uint CreateVBO()
     {
-        if (_openGl == null)
+        if (_initialized == false)
         {
-            throw new Exception("OpenGL has not been initialized!");
+            throw new RendererNotInitializedException();
         }
 
         return _openGl.GenBuffer();
@@ -123,9 +139,9 @@ public class Renderer
 
     public void BindVBO(uint vbo)
     {
-        if (_openGl == null)
+        if (_initialized == false)
         {
-            throw new Exception("OpenGL has not been initialized!");
+            throw new RendererNotInitializedException();
         }
 
         _openGl.BindBuffer(BufferTargetARB.ArrayBuffer, vbo);
@@ -133,9 +149,9 @@ public class Renderer
 
     public unsafe void AddBufferData(BufferTargetARB target, nuint size, void* data, GLEnum usage)
     {
-        if (_openGl == null)
+        if (_initialized == false)
         {
-            throw new Exception("OpenGL has not been initialized!");
+            throw new RendererNotInitializedException();
         }
 
         _openGl.BufferData(target, size, data, usage);
@@ -143,9 +159,9 @@ public class Renderer
 
     public bool ShaderCompilationSuccessful(uint shaderObj)
     {
-        if (_openGl == null)
+        if (_initialized == false)
         {
-            throw new Exception("OpenGL has not been initialized!");
+            throw new RendererNotInitializedException();
         }
 
         _openGl.GetShader(shaderObj, ShaderParameterName.CompileStatus, out int vStatus);
