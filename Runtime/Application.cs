@@ -27,14 +27,17 @@ public sealed class Application : IApplication
 
     public void BuildSurface(RenderSurfaceOptions options)
     {
-        _primarySurface = new SilkRenderSurface(options);
+        _primarySurface = new VeldridRenderSurface(options);
     }
 
     private void HandleLoad()
     {
-        var glSurface = (SilkRenderSurface)_primarySurface!;
-        _primaryRenderer = new GLRenderer(glSurface.CreateGraphicsContext());
-        _primaryRenderer.Initialize();
+        if (_primarySurface is SilkRenderSurface silkSurface)
+        {
+            var glSurface = silkSurface!;
+            _primaryRenderer = new GLRenderer(glSurface.CreateGraphicsContext());
+            _primaryRenderer.Initialize();
+        }
     }
 
     private void HandleRender(double dt)
