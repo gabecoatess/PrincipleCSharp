@@ -3,6 +3,7 @@
 public interface IRenderSurface : IDisposable
 {
     string SurfaceTitle { get; set; }
+    bool IsRunning { get; }
     bool IsEnding { get; }
 
     int Width { get; }
@@ -21,4 +22,5 @@ public interface IRenderSurface : IDisposable
     void Begin();
     void End();
     void PollEvents();
+    object GetInternalSurface();
 }

@@ -8,7 +8,9 @@ public class Program
     {
         Application myApp = new Application();
         myApp.Initialize();
-        myApp.BuildSurface(RenderSurfaceOptions.Default);
+        
+        var surface = myApp.BuildSurface(RenderSurfaceOptions.Default);
+        var renderer = myApp.BuildRenderer(surface);
 
         myApp.Run();
     }

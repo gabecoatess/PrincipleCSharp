@@ -30,7 +30,9 @@ public class VeldridRenderSurface : IRenderSurface
     public int Height => _window.Height;
     public int XPos => _window.X;
     public int YPos => _window.Y;
-    public bool IsEnding => !_window.Exists;
+    public bool IsRunning => _window.Exists;
+    public bool IsEnding { get; private set; }
+
     #endregion
 
     public VeldridRenderSurface(RenderSurfaceOptions options)
@@ -43,6 +45,8 @@ public class VeldridRenderSurface : IRenderSurface
             WindowHeight = options.height,
             WindowTitle = options.title,
         });
+
+        _window.Closing += HandleClosing;
     }
     
     public void Dispose()
@@ -61,5 +65,15 @@ public class VeldridRenderSurface : IRenderSurface
     public void PollEvents()
     {
         _window.PumpEvents();
+    }
+
+    public object GetInternalSurface()
+    {
+        return _window;
+    }
+
+    private void HandleClosing()
+    {
+        IsEnding = true;
     }
 }

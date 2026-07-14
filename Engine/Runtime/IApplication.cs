@@ -4,5 +4,6 @@ public interface IApplication
 {
     void Initialize();
     void Run();
-    void BuildSurface(RenderSurfaceOptions options);
+    IRenderSurface BuildSurface(RenderSurfaceOptions options);
+    IRenderer BuildRenderer(IRenderSurface renderSurface);
 }
