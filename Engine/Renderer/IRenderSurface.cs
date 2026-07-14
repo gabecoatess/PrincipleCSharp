@@ -20,4 +20,5 @@ public interface IRenderSurface : IDisposable
 
     void Begin();
     void End();
+    void PollEvents();
 }

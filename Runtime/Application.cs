@@ -17,11 +17,9 @@ public sealed class Application : IApplication
     {
         Console.WriteLine("Running application");
 
-        if (_primarySurface != null)
+        while (_primarySurface?.IsEnding == false)
         {
-            _primarySurface.Load += HandleLoad;
-            _primarySurface.Render += HandleRender;
-            _primarySurface.Begin();
+            _primarySurface.PollEvents();
         }
     }
 
@@ -36,7 +34,7 @@ public sealed class Application : IApplication
         {
             var glSurface = silkSurface!;
             _primaryRenderer = new GLRenderer(glSurface.CreateGraphicsContext());
-            _primaryRenderer.Initialize();
+            _primaryRenderer.Initialize(null);
         }
     }
 

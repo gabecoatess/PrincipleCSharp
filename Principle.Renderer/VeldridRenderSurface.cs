@@ -57,4 +57,9 @@ public class VeldridRenderSurface : IRenderSurface
     {
         _window.Close();
     }
+
+    public void PollEvents()
+    {
+        _window.PumpEvents();
+    }
 }

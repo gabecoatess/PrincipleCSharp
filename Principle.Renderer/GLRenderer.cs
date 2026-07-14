@@ -17,7 +17,7 @@ public sealed class GLRenderer(GL glContext) : IRenderer
 
     public bool Initialized => _initialized;
 
-    public unsafe void Initialize()
+    public unsafe void Initialize(IRenderSurface renderSurface)
     {
         _initialized = true;
 

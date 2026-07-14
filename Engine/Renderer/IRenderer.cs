@@ -4,7 +4,7 @@ namespace Principle.API.Renderer;
 
 public interface IRenderer
 {
-    void Initialize();
+    void Initialize(IRenderSurface renderSurface);
     void Render();
     void SetClearColor(Color clearColor);
     void ClearColor();

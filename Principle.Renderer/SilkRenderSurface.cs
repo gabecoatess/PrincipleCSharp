@@ -76,6 +76,11 @@ public sealed class SilkRenderSurface : IRenderSurface
         _window.Dispose();
     }
 
+    public void PollEvents()
+    {
+
+    }
+
     private void HandleLoad() => Load?.Invoke();
     private void HandleUpdate(double dt) => Update?.Invoke(dt);
     private void HandleRender(double dt) => Render?.Invoke(dt);
