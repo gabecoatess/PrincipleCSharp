@@ -30,12 +30,6 @@ public sealed class Application : IApplication
 
     private void HandleLoad()
     {
-        if (_primarySurface is SilkRenderSurface silkSurface)
-        {
-            var glSurface = silkSurface!;
-            _primaryRenderer = new GLRenderer(glSurface.CreateGraphicsContext());
-            _primaryRenderer.Initialize(null);
-        }
     }
 
     private void HandleRender(double dt)
