@@ -1,0 +1,6 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <ItemGroup>
+    <ProjectReference Include="../Principle.Platform/Principle.Platform.csproj" />
+    <ProjectReference Include="../Principle.Rendering.Abstractions/Principle.Rendering.Abstractions.csproj" />
+  </ItemGroup>
+</Project>

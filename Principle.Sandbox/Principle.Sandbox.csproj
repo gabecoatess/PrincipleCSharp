@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="../Principle.Platform/Principle.Platform.csproj" />
+    <ProjectReference Include="../Principle.Rendering.Abstractions/Principle.Rendering.Abstractions.csproj" />
+    <ProjectReference Include="../Principle.Rendering.Raylib/Principle.Rendering.Raylib.csproj" />
+    <ProjectReference Include="../Principle.Rendering/Principle.Rendering.csproj" />
+  </ItemGroup>
+</Project>

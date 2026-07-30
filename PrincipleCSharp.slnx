@@ -1,7 +1,8 @@
 <Solution>
-  <Project Path="Engine/Principle.API.csproj" />
-  <Project Path="ExampleProject/ExampleProject.csproj" />
-  <Project Path="Principle.Input/Principle.Input.csproj" Id="f895c2e7-fd46-4c4e-b159-aa4a977ca40b" />
-  <Project Path="Principle.Renderer/Principle.Renderer.csproj" Id="09f2bb34-7af7-486a-bca8-ff3469923769" />
-  <Project Path="Runtime/Principle.Runtime.csproj" />
+  <Project Path="Principle.Platform/Principle.Platform.csproj" />
+  <Project Path="Principle.Rendering.Abstractions/Principle.Rendering.Abstractions.csproj" />
+  <Project Path="Principle.Rendering/Principle.Rendering.csproj" />
+  <Project Path="Principle.Rendering.Raylib/Principle.Rendering.Raylib.csproj" />
+  <Project Path="Principle.Sandbox/Principle.Sandbox.csproj" />
+  <Project Path="Principle.Rendering.Tests/Principle.Rendering.Tests.csproj" />
 </Solution>
