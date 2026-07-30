@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <IsTestProject>true</IsTestProject>
+    <IsPackable>false</IsPackable>
+    <TestingPlatformDotnetTestSupport>true</TestingPlatformDotnetTestSupport>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="18.8.1" />
+    <PackageReference Include="xunit.v3" Version="3.2.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="../Principle.Platform/Principle.Platform.csproj" />
+    <ProjectReference Include="../Principle.Rendering.Abstractions/Principle.Rendering.Abstractions.csproj" />
+    <ProjectReference Include="../Principle.Rendering.Raylib/Principle.Rendering.Raylib.csproj" />
+    <ProjectReference Include="../Principle.Rendering/Principle.Rendering.csproj" />
+  </ItemGroup>
+</Project>

@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Raylib-cs" Version="8.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="../Principle.Platform/Principle.Platform.csproj" />
+    <ProjectReference Include="../Principle.Rendering.Abstractions/Principle.Rendering.Abstractions.csproj" />
+    <ProjectReference Include="../Principle.Rendering/Principle.Rendering.csproj" />
+  </ItemGroup>
+</Project>

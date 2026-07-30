@@ -1,1 +1,8 @@
-<Solution />
+<Solution>
+  <Project Path="Principle.Platform/Principle.Platform.csproj" />
+  <Project Path="Principle.Rendering.Abstractions/Principle.Rendering.Abstractions.csproj" />
+  <Project Path="Principle.Rendering/Principle.Rendering.csproj" />
+  <Project Path="Principle.Rendering.Raylib/Principle.Rendering.Raylib.csproj" />
+  <Project Path="Principle.Sandbox/Principle.Sandbox.csproj" />
+  <Project Path="Principle.Rendering.Tests/Principle.Rendering.Tests.csproj" />
+</Solution>
