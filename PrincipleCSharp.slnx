@@ -1,4 +1,5 @@
 <Solution>
+  <Project Path="Principle.Editor/Principle.Editor.csproj" />
   <Project Path="Principle.Platform/Principle.Platform.csproj" />
   <Project Path="Principle.Rendering.Abstractions/Principle.Rendering.Abstractions.csproj" />
   <Project Path="Principle.Rendering/Principle.Rendering.csproj" />
