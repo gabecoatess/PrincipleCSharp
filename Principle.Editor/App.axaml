@@ -10,6 +10,16 @@
     </Application.DataTemplates>
 
     <Application.Styles>
-        <FluentTheme />
+        <FluentTheme DensityStyle="Compact" />
     </Application.Styles>
+
+    <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <MergeResourceInclude Source="/Styles/ThemeResources.axaml" />
+            </ResourceDictionary.MergedDictionaries>
+
+            <x:String x:Key="AppTitle">Principle Editor</x:String>
+        </ResourceDictionary>
+    </Application.Resources>
 </Application>

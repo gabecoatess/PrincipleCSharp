@@ -1,0 +1,85 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:models="using:Principle.Editor.Models"
+        xmlns:root="clr-namespace:Principle.Editor"
+        xmlns:viewmodels="using:Principle.Editor.ViewModels" 
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="600"
+        x:Class="Principle.Editor.Views.ProjectHub"
+        x:DataType="viewmodels:ProjectHubViewModel"
+        Title="{Binding ViewModelTitle}"
+        Width="1000" Height="600"
+        MinWidth="1000" MinHeight="600"
+        WindowStartupLocation="CenterScreen">
+
+    <Grid ColumnDefinitions="350,*" RowDefinitions="28,*,16">
+
+        <!-- Header -->
+        <Panel Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Background="DarkGray">
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Spacing="8" Margin="20,0" Background="Gray">
+                <!-- Placeholder icon -->
+                <Panel Background="Red" Width="15" Height="15" />
+                <TextBlock Text="{Binding ViewModelTitle}" FontSize="14" VerticalAlignment="Center" TextAlignment="Center" />
+            </StackPanel>
+        </Panel>
+
+        <!-- Projects Viewer -->
+        <Panel Grid.Row="1" Grid.Column="0" Background="#555599">
+            <Panel Margin="20" Background="#9999AA">
+                <Grid RowDefinitions="Auto, Auto, Auto, *">
+                    <TextBlock Grid.Row="0" Text="Projects" FontSize="20" FontWeight="Bold" Margin="0,0,0,8"/>
+
+                    <StackPanel Grid.Row="1" Spacing="8">
+                        <Button Content="New Project" HorizontalAlignment="Stretch" Command="{Binding SwitchToCreateFormCommand}"/>
+                        <Button Content="Open Project" HorizontalAlignment="Stretch"/>
+                    </StackPanel>
+
+                    <Rectangle Grid.Row="2" Height="1" Fill="#555555" HorizontalAlignment="Stretch" Margin="0,4"/>
+
+                    <Grid Grid.Row="3" RowDefinitions="Auto,*" Background="Red">
+                        <ListBox Grid.Row="1" ItemsSource="{Binding RecentProjects}" SelectedItem="{Binding SelectedProject}" Background="Transparent" BorderThickness="0">
+                            <ListBox.ItemTemplate>
+                                <DataTemplate DataType="models:ProjectCacheModel">
+                                    <Panel HorizontalAlignment="Stretch">
+                                        <StackPanel Margin="5,10" Spacing="3">
+                                            <TextBlock Text="{Binding Name}" FontSize="16"/>
+                                            <TextBlock Text="{Binding Path}" FontSize="12" Opacity="0.7"/>
+                                        </StackPanel>
+                                    </Panel>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
+                    </Grid>
+                </Grid>
+            </Panel>
+        </Panel>
+
+        <!-- Content Area -->
+        <Grid Grid.Row="1" Grid.Column="1" Background="Green">
+
+            <StackPanel Margin="100" Spacing="4">
+                <Grid ColumnDefinitions="Auto,*" RowDefinitions="Auto,Auto,Auto" Background="Gray" RowSpacing="8" ColumnSpacing="16">
+                    <TextBlock Grid.Column="0" Grid.Row="0" Text="Name" />
+                    <TextBox Grid.Column="1" Grid.Row="0" AcceptsReturn="False" TextWrapping="NoWrap" Text="{Binding ProjectName}" PlaceholderText="Give your project a unique name" IsEnabled="{Binding IsProjectInputEditable}"/>
+
+                    <TextBlock Grid.Column="0" Grid.Row="1" Text="Description" />
+                    <TextBox Grid.Column="1" Grid.Row="1" AcceptsReturn="True" TextWrapping="Wrap" MinLines="4" Text="{Binding ProjectDescription}" PlaceholderText="Describe the project you're going to work on" IsEnabled="{Binding IsProjectInputEditable}"/>
+
+                    <Button Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="2" HorizontalAlignment="Right" Content="{Binding CreateButtonText}" Command="{Binding CreateOrOpenCommand}"/>
+                </Grid>
+
+                <Border Background="DarkRed" BorderBrush="OrangeRed" BorderThickness="1" Padding="4" Opacity="1" IsVisible="{Binding HasCreationFormError}">
+                    <TextBlock Foreground="OrangeRed" TextWrapping="Wrap" Text="{Binding CreationFormError}" />
+                </Border>
+            </StackPanel>
+
+        </Grid>
+        
+        <!-- Footer -->
+        <StackPanel Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Background="#995555">
+            <TextBlock Text="{x:Static root:App.EditorVersion}" TextAlignment="Right" Margin="20,0"/>
+        </StackPanel>
+
+    </Grid>
+</Window>

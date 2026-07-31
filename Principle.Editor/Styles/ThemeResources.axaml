@@ -1,0 +1,32 @@
+<ResourceDictionary
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <Design.PreviewWith>
+        <Border Padding="20">
+            <!-- Add Controls for Previewer Here -->
+        </Border>
+    </Design.PreviewWith>
+
+    <ResourceDictionary.ThemeDictionaries>
+
+        <ResourceDictionary x:Key="Light">
+            <SolidColorBrush x:Key="EditorBackgroundBrush" Color="#F3F3F3" />
+            <SolidColorBrush x:Key="PanelBackgroundBrush" Color="#FFFFFF" />
+            <SolidColorBrush x:Key="PanelBorderBrush" Color="#D5D5D5" />
+            <SolidColorBrush x:Key="TextPrimaryBrush" Color="#1F1F1F" />
+            <SolidColorBrush x:Key="TextSecondaryBrush" Color="#666666" />
+            <SolidColorBrush x:Key="SelectionBrush" Color="#D6E5FF" />
+        </ResourceDictionary>
+
+        <ResourceDictionary x:Key="Dark">
+            <SolidColorBrush x:Key="EditorBackgroundBrush" Color="#1E1F22" />
+            <SolidColorBrush x:Key="PanelBackgroundBrush" Color="#25262A" />
+            <SolidColorBrush x:Key="PanelBorderBrush" Color="#393B40" />
+            <SolidColorBrush x:Key="TextPrimaryBrush" Color="#E8E8E8" />
+            <SolidColorBrush x:Key="TextSecondaryBrush" Color="#9A9CA3" />
+            <SolidColorBrush x:Key="SelectionBrush" Color="#304C7A" />
+        </ResourceDictionary>
+
+    </ResourceDictionary.ThemeDictionaries>
+</ResourceDictionary>
