@@ -7,56 +7,33 @@ namespace Principle.Sandbox;
 
 internal static class Program
 {
-    private const int Success = 0;
-    private const int Failure = 1;
-
-    public static int Main(string[] args)
-    {
-        var arguments = SandboxArguments.Parse(args);
-        if (!arguments.IsSuccess)
-        {
-            Console.Error.WriteLine(arguments.Error);
-            return Failure;
-        }
-
-        var options = arguments.Value!;
-        return options.Mode switch
-        {
-            SandboxMode.Window => RunWindow(visible: true, frameLimit: null),
-            SandboxMode.VerifyWindow => RunWindow(visible: false, frameLimit: 3),
-            SandboxMode.Offscreen => RunOffscreen(options.OutputPath),
-            _ => Failure
-        };
-    }
-
-    private static int RunWindow(bool visible, int? frameLimit)
+    public static int Main()
     {
         var created = RaylibBackend.CreateSession(new WindowDescription(
             "Principle Rendering Sandbox",
             800,
             600,
             IsResizable: true,
-            IsVisible: visible));
+            IsVisible: true));
 
         if (!created.IsSuccess)
         {
-            Write(created.Error!);
-            return Failure;
+            LogError(created.Error!);
+            return 1;
         }
 
         using var session = created.Value;
-        var exitCode = Success;
-        var renderedFrames = 0;
+        var exitCode = 0;
 
         try
         {
-            while (frameLimit is null || renderedFrames < frameLimit.Value)
+            while (true)
             {
                 var polled = session.Window.PollEvents();
                 if (!polled.IsSuccess)
                 {
-                    Write(polled.Error!);
-                    exitCode = Failure;
+                    LogError(polled.Error!);
+                    exitCode = 1;
                     break;
                 }
 
@@ -68,217 +45,54 @@ internal static class Program
                 var resize = session.ApplyWindowResize(polled.Value);
                 if (!resize.IsSuccess)
                 {
-                    Write(resize.Error!);
-                    exitCode = Failure;
+                    LogError(resize.Error!);
+                    exitCode = 1;
                     break;
                 }
 
                 var rendered = session.RenderToWindow(SandboxFrame.Create());
                 if (!rendered.IsSuccess)
                 {
-                    Write(rendered.Error!);
-                    exitCode = Failure;
+                    LogError(rendered.Error!);
+                    exitCode = 1;
                     break;
                 }
-
-                renderedFrames++;
             }
         }
         finally
         {
-            if (!WriteShutdownFailures(session.Shutdown()))
+            var report = session.Shutdown();
+            if (report.RendererError is not null)
             {
-                exitCode = Failure;
+                LogError(report.RendererError);
+            }
+
+            if (report.WindowError is not null)
+            {
+                LogError(report.WindowError);
+            }
+
+            if (!report.IsSuccess)
+            {
+                exitCode = 1;
             }
         }
 
         return exitCode;
     }
 
-    private static int RunOffscreen(string outputPath)
+    private static void LogError(RenderError error)
     {
-        var created = RaylibBackend.CreateSession(new WindowDescription(
-            "Principle Offscreen Context",
-            256,
-            256,
-            IsResizable: false,
-            IsVisible: false));
-
-        if (!created.IsSuccess)
-        {
-            Write(created.Error!);
-            return Failure;
-        }
-
-        using var session = created.Value;
-        var exitCode = Success;
-        RenderTargetHandle offscreenTarget = default;
-
-        try
-        {
-            var target = session.Renderer.CreateOffscreenTarget(new RenderTargetDescription(256, 256));
-            if (!target.IsSuccess)
-            {
-                Write(target.Error!);
-                return Failure;
-            }
-
-            offscreenTarget = target.Value;
-
-            var submitted = session.Renderer.Submit(offscreenTarget, SandboxFrame.Create());
-            if (!submitted.IsSuccess)
-            {
-                Write(submitted.Error!);
-                return Failure;
-            }
-
-            var readback = session.Renderer.ReadRenderTarget(offscreenTarget);
-            if (!readback.IsSuccess)
-            {
-                Write(readback.Error!);
-                return Failure;
-            }
-
-            var background = readback.Value.GetPixel(8, 8);
-            var rectangle = readback.Value.GetPixel(80, 80);
-            if (background != SandboxFrame.BackgroundColor ||
-                rectangle != SandboxFrame.RectangleColor)
-            {
-                Console.Error.WriteLine(
-                    $"Offscreen verification failed. Background={background}; Rectangle={rectangle}.");
-                return Failure;
-            }
-
-            var fullOutputPath = Path.GetFullPath(outputPath);
-            var directory = Path.GetDirectoryName(fullOutputPath);
-            if (string.IsNullOrEmpty(directory))
-            {
-                Console.Error.WriteLine("Could not determine the PNG output directory.");
-                return Failure;
-            }
-
-            Directory.CreateDirectory(directory);
-            var saved = session.Renderer.SaveRenderTargetPng(offscreenTarget, fullOutputPath);
-            if (!saved.IsSuccess)
-            {
-                Write(saved.Error!);
-                return Failure;
-            }
-
-            var file = new FileInfo(fullOutputPath);
-            if (!file.Exists || file.Length == 0)
-            {
-                Console.Error.WriteLine("The offscreen PNG was not created or is empty.");
-                return Failure;
-            }
-
-            Console.WriteLine($"Verified offscreen render and saved {fullOutputPath}");
-        }
-        finally
-        {
-            if (offscreenTarget.IsValid)
-            {
-                var destroyed = session.Renderer.DestroyRenderTarget(offscreenTarget);
-                if (!destroyed.IsSuccess)
-                {
-                    Write(destroyed.Error!);
-                    exitCode = Failure;
-                }
-            }
-
-            if (!WriteShutdownFailures(session.Shutdown()))
-            {
-                exitCode = Failure;
-            }
-        }
-
-        return exitCode;
+        Console.Error.WriteLine($"{error.Code}: {error.Message}{FormatDetail(error.Detail)}");
     }
-
-    private static bool WriteShutdownFailures(ShutdownReport report)
+    
+    private static void LogError(PlatformError error)
     {
-        if (report.RendererError is not null)
-        {
-            Write(report.RendererError);
-        }
-
-        if (report.WindowError is not null)
-        {
-            Write(report.WindowError);
-        }
-
-        return report.IsSuccess;
+        Console.Error.WriteLine($"{error.Code}: {error.Message}{FormatDetail(error.Detail)}");
     }
-
-    private static void Write(RenderError error)
+    
+    private static string FormatDetail(string? detail)
     {
-        Console.Error.WriteLine(
-            $"{error.Code}: {error.Message}{FormatDetail(error.Detail)}");
-    }
-
-    private static void Write(PlatformError error)
-    {
-        Console.Error.WriteLine(
-            $"{error.Code}: {error.Message}{FormatDetail(error.Detail)}");
-    }
-
-    private static string FormatDetail(string? detail) =>
-        string.IsNullOrWhiteSpace(detail) ? string.Empty : $" ({detail})";
-}
-
-internal enum SandboxMode
-{
-    Window,
-    VerifyWindow,
-    Offscreen
-}
-
-internal sealed record SandboxOptions(SandboxMode Mode, string OutputPath);
-
-internal readonly record struct ArgumentResult(SandboxOptions? Value, string? Error)
-{
-    public bool IsSuccess => Error is null;
-
-    public static ArgumentResult Success(SandboxOptions value) => new(value, null);
-
-    public static ArgumentResult Failure(string error) => new(null, error);
-}
-
-internal static class SandboxArguments
-{
-    private static readonly string DefaultOutputPath =
-        Path.Combine("artifacts", "Principle.Sandbox", "offscreen.png");
-
-    public static ArgumentResult Parse(string[] args)
-    {
-        ArgumentNullException.ThrowIfNull(args);
-
-        var mode = SandboxMode.Window;
-        var outputPath = DefaultOutputPath;
-
-        for (var index = 0; index < args.Length; index++)
-        {
-            switch (args[index])
-            {
-                case "--window":
-                    mode = SandboxMode.Window;
-                    break;
-                case "--verify-window":
-                    mode = SandboxMode.VerifyWindow;
-                    break;
-                case "--offscreen":
-                    mode = SandboxMode.Offscreen;
-                    break;
-                case "--output" when index + 1 < args.Length:
-                    outputPath = args[++index];
-                    break;
-                case "--output":
-                    return ArgumentResult.Failure("--output requires a path.");
-                default:
-                    return ArgumentResult.Failure($"Unknown argument: {args[index]}");
-            }
-        }
-
-        return ArgumentResult.Success(new SandboxOptions(mode, outputPath));
+        return string.IsNullOrWhiteSpace(detail) ? string.Empty : $" ({detail})";
     }
 }
