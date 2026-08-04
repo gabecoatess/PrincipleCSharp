@@ -1,9 +1,12 @@
 <Solution>
+  <Project Path="Principle.Contracts\Principle.Contracts.csproj" Type="Classic C#" />
   <Project Path="Principle.Editor/Principle.Editor.csproj" />
+  <Project Path="Principle.Engine/Principle.Engine.csproj" Type="Classic C#" />
   <Project Path="Principle.Platform/Principle.Platform.csproj" />
   <Project Path="Principle.Rendering.Abstractions/Principle.Rendering.Abstractions.csproj" />
-  <Project Path="Principle.Rendering/Principle.Rendering.csproj" />
   <Project Path="Principle.Rendering.Raylib/Principle.Rendering.Raylib.csproj" />
   <Project Path="Principle.Rendering.Tests/Principle.Rendering.Tests.csproj" />
+  <Project Path="Principle.Rendering/Principle.Rendering.csproj" />
   <Project Path="Principle.Runtime/Principle.Runtime.csproj" Type="Classic C#" />
+  <Project Path="TestGameProject\TestGameProject.csproj" Type="Classic C#" />
 </Solution>

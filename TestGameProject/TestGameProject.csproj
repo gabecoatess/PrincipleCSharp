@@ -1,0 +1,23 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net10.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Principle.Contracts\Principle.Contracts.csproj" />
+    </ItemGroup>
+
+    <Target Name="CopyGameToRuntime" AfterTargets="Build">
+    <ItemGroup>
+        <GameFiles Include="$(TargetDir)**\*.*" />
+    </ItemGroup>
+
+    <Copy SourceFiles="@(GameFiles)"
+          DestinationFiles="@(GameFiles->'..\Principle.Runtime\bin\Debug\net10.0\%(RecursiveDir)%(Filename)%(Extension)')"
+          SkipUnchangedFiles="true" />
+    </Target>
+
+</Project>

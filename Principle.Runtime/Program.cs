@@ -1,8 +1,14 @@
-﻿namespace Principle.Runtime;
+﻿using System.Reflection;
+using Principle.Contracts;
+using Principle.Engine;
+using TestGameProject;
+
+namespace Principle.Runtime;
 
 public static class Program
 {
     private static bool OpenWindow = true;
+    private static TickScheduler Scheduler = new TickScheduler();
 
     public static void Main(string[] args)
     {
@@ -15,8 +21,9 @@ public static class Program
         {
             throw new NotImplementedException("Window mode is not yet implemented!");
         }
-
-        Console.WriteLine("Hello, Principle!");
+        
+        MyGame application = new MyGame();
+        application.Test();
     }
 
     private static void ParseArgs(string[] args)
