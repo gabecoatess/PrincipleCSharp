@@ -2,5 +2,15 @@
 
 public interface IPrincipleApplication
 {
-    void Test();
+    void PreInitialize()
+    {
+    }
+
+    void Initialize()
+    {
+    }
+
+    void PostInitialize()
+    {
+    }
 }

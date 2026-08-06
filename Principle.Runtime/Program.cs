@@ -22,8 +22,10 @@ public static class Program
             throw new NotImplementedException("Window mode is not yet implemented!");
         }
         
-        MyGame application = new MyGame();
-        application.Test();
+        IPrincipleApplication application = new MyGame();
+        application.PreInitialize();
+        application.Initialize();
+        application.PostInitialize();
     }
 
     private static void ParseArgs(string[] args)
