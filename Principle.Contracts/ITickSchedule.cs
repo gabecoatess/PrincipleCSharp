@@ -1,4 +1,4 @@
-namespace Principle.Engine;
+namespace Principle.Contracts;
 
 public interface ITickSchedule
 {
