@@ -8,6 +8,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\Principle.Contracts\Principle.Contracts.csproj" />
+      <ProjectReference Include="..\Principle.Engine\Principle.Engine.csproj" />
     </ItemGroup>
 
     <Target Name="CopyGameToRuntime" AfterTargets="Build">
