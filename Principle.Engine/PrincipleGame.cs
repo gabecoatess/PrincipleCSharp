@@ -4,7 +4,7 @@ namespace Principle.Engine;
 
 public abstract class PrincipleGame
 {
-    public ITickScheduler TickScheduler { get; } = new TickScheduler();
+    public TickScheduler TickScheduler { get; private set; } = new TickScheduler();
 
     internal void PreInitialize()
     {

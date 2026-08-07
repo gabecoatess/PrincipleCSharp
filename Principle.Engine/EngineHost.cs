@@ -15,6 +15,8 @@ public sealed class EngineHost
             
             lifetime.MarkRunning();
 
+            game.TickScheduler.Start();
+
             while (!lifetime.ShutdownRequested && lifetime.IsRunning)
             {
                 game.TickScheduler.Tick();
