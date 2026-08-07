@@ -23,8 +23,18 @@ public abstract class PrincipleGame
 
     internal void Shutdown()
     {
-        OnPreShutdown();
-        OnShutdown();
+        try
+        {
+            OnPreShutdown();
+        }
+        catch (Exception e)
+        {
+            Console.Error.WriteLine(e);
+        }
+        finally
+        {
+            OnShutdown();
+        }
     }
     
     protected virtual void OnPreInitialize()
