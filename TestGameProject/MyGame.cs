@@ -6,7 +6,7 @@ public class MyGame : PrincipleGame
 {
     protected override void OnInitialize()
     {
-        TickScheduler.AddTickSchedule("MyTickSchedule", new MyTickSchedule());
-        TickScheduler.AddTickSchedule("MyTickSchedule2", new MyOtherTickSchedule());
+        TickScheduler.AddTickSchedule("MyTickSchedule", new MyTickSchedule(), 1);
+        TickScheduler.AddTickSchedule("MyTickSchedule2", new MyOtherTickSchedule(), 2);
     }
 }

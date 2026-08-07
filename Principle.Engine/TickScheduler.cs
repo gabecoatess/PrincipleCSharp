@@ -56,19 +56,19 @@ public class TickScheduler
         Thread.Sleep(1);
     }
 
-    public void AddTickSchedule(ITickSchedule tickSchedule)
+    public void AddTickSchedule(ITickSchedule tickSchedule, int tickRate = 20)
     {
-        AddTickSchedule($"Schedule_{_scheduledTicks.Count}", tickSchedule);
+        AddTickSchedule($"Schedule_{_scheduledTicks.Count}", tickSchedule, tickRate);
     }
 
-    public void AddTickSchedule(string scheduleName, ITickSchedule tickSchedule)
+    public void AddTickSchedule(string scheduleName, ITickSchedule tickSchedule, int tickRate = 20)
     {
-        if (tickSchedule.TickRate < 1 || tickSchedule.TickRate > MaxTickRate)
+        if (tickRate < 1 || tickRate > MaxTickRate)
         {
-            throw new ArgumentOutOfRangeException(nameof(tickSchedule), $"Tick rate must be between 1 and {MaxTickRate}");
+            throw new ArgumentOutOfRangeException(nameof(tickRate), $"Tick rate must be between 1 and {MaxTickRate}");
         }
 
-        _scheduledTicks[scheduleName] = new ScheduledTick { Schedule = tickSchedule };
+        _scheduledTicks[scheduleName] = new ScheduledTick { Schedule = tickSchedule, tickRate = tickRate };
     }
 
     private void RunSchedulerTick(double elapsedSeconds)
@@ -77,7 +77,7 @@ public class TickScheduler
         {
             ITickSchedule schedule = scheduledTick.Schedule;
 
-            double scheduleInterval = 1.0 / schedule.TickRate;
+            double scheduleInterval = 1.0 / scheduledTick.tickRate;
             scheduledTick.Accumulator += elapsedSeconds;
 
             while (scheduledTick.Accumulator >= scheduleInterval)
