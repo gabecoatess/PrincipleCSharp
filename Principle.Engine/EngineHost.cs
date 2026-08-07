@@ -4,10 +4,11 @@ namespace Principle.Engine;
 
 public sealed class EngineHost
 {
-    private readonly ApplicationLifetime _lifetime = new ApplicationLifetime();
+    private ApplicationLifetime? _lifetime = null;
     
     public void Run(IPrincipleGame game)
     {
+        _lifetime = new ApplicationLifetime();
         Application.Attach(_lifetime);
         
         try
