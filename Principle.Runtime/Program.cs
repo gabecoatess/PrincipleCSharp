@@ -62,22 +62,28 @@ public static class Program
 
                     shouldClose = polled.Value.CloseRequested;
                 }
+
+                if (windowCreated)
+                {
+                    host.RequestShutdown();
+                }
+
+                engineHostThread.Join();
             }
         }
-
-        if (windowCreated)
+        else
         {
             host.RequestShutdown();
+            engineHostThread.Join();
         }
         
-        engineHostThread.Join();
     }
 
     private static void ParseArgs(string[] args)
     {
         foreach (string arg in args)
         {
-            Console.WriteLine($"[Runtime] Used arg: '{arg}'");
+            Debug.WriteLine($"[Runtime] Used arg: '{arg}'");
 
             switch (arg)
             {

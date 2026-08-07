@@ -1,4 +1,5 @@
 using Principle.Contracts;
+using System.Diagnostics;
 
 namespace Principle.Engine;
 
@@ -39,26 +40,26 @@ public abstract class PrincipleGame
     
     protected virtual void OnPreInitialize()
     {
-        Console.WriteLine("[Engine] PreInitialize");
+        Debug.WriteLine("[Engine] PreInitialize");
     }
 
     protected virtual void OnInitialize()
     {
-        Console.WriteLine("[Engine] Initialize");
+        Debug.WriteLine("[Engine] Initialize");
     }
 
     protected virtual void OnPostInitialize()
     {
-        Console.WriteLine("[Engine] PostInitialize");
+        Debug.WriteLine("[Engine] PostInitialize");
     }
 
     protected virtual void OnPreShutdown()
     {
-        Console.WriteLine("[Engine] PreShutdown");
+        Debug.WriteLine("[Engine] PreShutdown");
     }
 
     protected virtual void OnShutdown()
     {
-        Console.WriteLine("[Engine] Shutdown");
+        Debug.WriteLine("[Engine] Shutdown");
     }
 }
