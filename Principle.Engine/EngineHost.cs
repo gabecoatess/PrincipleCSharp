@@ -25,8 +25,15 @@ public sealed class EngineHost
         }
         finally
         {
-            game.PreShutdown();
-            game.Shutdown();
+            try
+            {
+                game.PreShutdown();
+                game.Shutdown();
+            }
+            catch (Exception e)
+            {
+                Console.Error.WriteLine(e);
+            }
             
             _lifetime.MarkStopped();
             Application.Detach(_lifetime);
