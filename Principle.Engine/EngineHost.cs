@@ -1,15 +1,11 @@
-using Principle.Contracts;
-
 namespace Principle.Engine;
 
 public sealed class EngineHost
 {
-    private ApplicationLifetime? _lifetime = null;
-    
     public void Run(PrincipleGame game)
     {
-        _lifetime = new ApplicationLifetime();
-        Application.Attach(_lifetime);
+        ApplicationLifetime lifetime = new ApplicationLifetime();
+        Application.Attach(lifetime);
         
         try
         {
@@ -17,9 +13,9 @@ public sealed class EngineHost
             game.Initialize();
             game.PostInitialize();
             
-            _lifetime.MarkRunning();
+            lifetime.MarkRunning();
 
-            while (!_lifetime.ShutdownRequested && _lifetime.IsRunning)
+            while (!lifetime.ShutdownRequested && lifetime.IsRunning)
             {
                 game.TickScheduler.Tick();
             }
@@ -35,8 +31,8 @@ public sealed class EngineHost
                 Console.Error.WriteLine(e);
             }
             
-            _lifetime.MarkStopped();
-            Application.Detach(_lifetime);
+            lifetime.MarkStopped();
+            Application.Detach(lifetime);
         }
     }
 }
