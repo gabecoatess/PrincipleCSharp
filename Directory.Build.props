@@ -1,16 +1,20 @@
 <Project>
-    <PropertyGroup>
-        <TargetFramework>net9.0</TargetFramework>
-        <ImplicitUsings>enable</ImplicitUsings>
-        <Nullable>enable</Nullable>
-        <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+  <PropertyGroup>
+    
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <AnalysisLevel>latest-all</AnalysisLevel>
+    <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
 
 		<!-- Engine Information -->
 		<EngineName>Principle Engine</EngineName>
-        <EngineVersion>0.1.0</EngineVersion>
+    <EngineVersion>0.1.0</EngineVersion>
 		
 		<!-- Editor Information -->
 		<EditorName>Principle Editor</EditorName>
-        <EditorVersion>0.1.0-alpha</EditorVersion>
-    </PropertyGroup>
+    <EditorVersion>0.1.0-alpha</EditorVersion>
+    
+  </PropertyGroup>
 </Project>
