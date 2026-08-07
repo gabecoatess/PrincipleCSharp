@@ -6,7 +6,7 @@ public sealed class EngineHost
 {
     private ApplicationLifetime? _lifetime = null;
     
-    public void Run(IPrincipleGame game)
+    public void Run(PrincipleGame game)
     {
         _lifetime = new ApplicationLifetime();
         Application.Attach(_lifetime);
@@ -19,7 +19,7 @@ public sealed class EngineHost
             
             _lifetime.MarkRunning();
 
-            while (!_lifetime.ShutdownRequested)
+            while (!_lifetime.ShutdownRequested && _lifetime.IsRunning)
             {
                 game.TickScheduler.Tick();
             }
@@ -28,7 +28,6 @@ public sealed class EngineHost
         {
             try
             {
-                game.PreShutdown();
                 game.Shutdown();
             }
             catch (Exception e)

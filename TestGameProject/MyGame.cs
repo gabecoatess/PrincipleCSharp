@@ -4,9 +4,8 @@ namespace TestGameProject;
 
 public class MyGame : PrincipleGame
 {
-    public override void Initialize()
+    protected override void OnInitialize()
     {
-        base.Initialize();
         TickScheduler.AddTickSchedule("MyTickSchedule", new MyTickSchedule());
     }
 }

@@ -1,36 +1,53 @@
-using System.Runtime.CompilerServices;
 using Principle.Contracts;
-
-[assembly: InternalsVisibleTo("Principle.Runtime")]
 
 namespace Principle.Engine;
 
-public abstract class PrincipleGame : IPrincipleGame
+public abstract class PrincipleGame
 {
     public ITickScheduler TickScheduler { get; } = new TickScheduler();
-    public bool ShutdownRequested { get; private set; } = false;
+
+    internal void PreInitialize()
+    {
+        OnPreInitialize();
+    }
+
+    internal void Initialize()
+    {
+        OnInitialize();
+    }
+
+    internal void PostInitialize()
+    {
+        OnPostInitialize();
+    }
+
+    internal void Shutdown()
+    {
+        OnPreShutdown();
+        OnShutdown();
+    }
     
-    public virtual void PreInitialize()
+    protected virtual void OnPreInitialize()
     {
         Console.WriteLine("[Engine] PreInitialize");
     }
 
-    public virtual void Initialize()
+    protected virtual void OnInitialize()
     {
         Console.WriteLine("[Engine] Initialize");
     }
 
-    public virtual void PostInitialize()
+    protected virtual void OnPostInitialize()
     {
         Console.WriteLine("[Engine] PostInitialize");
     }
 
-    public virtual void PreShutdown()
+    protected virtual void OnPreShutdown()
     {
         Console.WriteLine("[Engine] PreShutdown");
     }
 
-    public virtual void Shutdown()
+    protected virtual void OnShutdown()
     {
         Console.WriteLine("[Engine] Shutdown");
     }

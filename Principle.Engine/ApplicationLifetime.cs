@@ -2,21 +2,24 @@ namespace Principle.Engine;
 
 internal sealed class ApplicationLifetime : IApplicationLifetime
 {
-    public bool IsRunning { get; private set; } = false;
-    public bool ShutdownRequested { get; private set; } = false;
+    public bool IsRunning => _isRunning;
+    public bool ShutdownRequested => _shutdownRequested;
+
+    private volatile bool _shutdownRequested = false;
+    private volatile bool _isRunning = false;
     
     public void RequestShutdown()
     {
-        ShutdownRequested = true;
+        _shutdownRequested = true;
     }
 
     public void MarkRunning()
     {
-        IsRunning = true;
+        _isRunning = true;
     }
 
     public void MarkStopped()
     {
-        IsRunning = false;
+        _isRunning = false;
     }
 }
