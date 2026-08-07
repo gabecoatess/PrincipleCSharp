@@ -19,8 +19,12 @@ public static class Program
         }
 
         EngineHost host = new EngineHost();
-        host.Run(new MyGame());
 
+        Thread engineHostThread = new Thread(() => host.Run(new MyGame()));
+        engineHostThread.Start();
+
+        bool windowCreated = false;
+        
         if (OpenWindow)
         {
             var window = RaylibBackend.CreateSession(new Platform.WindowDescription(
@@ -30,6 +34,8 @@ public static class Program
             {
                 throw new Exception("Failed to create window: " + window.Error?.Message);
             }
+
+            windowCreated = true;
 
             using (var session = window.Value)
             {
@@ -58,6 +64,13 @@ public static class Program
                 }
             }
         }
+
+        if (windowCreated)
+        {
+            host.RequestShutdown();
+        }
+        
+        engineHostThread.Join();
     }
 
     private static void ParseArgs(string[] args)

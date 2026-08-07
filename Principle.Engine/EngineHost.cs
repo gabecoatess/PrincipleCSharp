@@ -2,35 +2,28 @@ namespace Principle.Engine;
 
 public sealed class EngineHost
 {
+    private readonly ApplicationLifetime _lifetime = new ApplicationLifetime();
+
+    public void RequestShutdown()
+    {
+        _lifetime.RequestShutdown();    
+    }
     
     public void Run(PrincipleGame game)
     {
-        ApplicationLifetime lifetime = new ApplicationLifetime();
-        Application.Attach(lifetime);
-
-        Thread? simulationThread = null;
+        Application.Attach(_lifetime);
         
         try
         {
             game.PreInitialize();
             game.Initialize();
             game.PostInitialize();
-        }
+            
+            _lifetime.MarkRunning();
 
-        lifetime.MarkRunning();
-
-        simulationThread = new Thread(() => SimulationLoop(lifetime, game));
-
-        
-    }
-
-    private void SimulationLoop(ApplicationLifetime lifetime, PrincipleGame game)
-    {
-        try
-        {
             game.TickScheduler.Start();
 
-            while (!lifetime.ShutdownRequested && lifetime.IsRunning)
+            while (!_lifetime.ShutdownRequested)
             {
                 game.TickScheduler.Tick();
             }
@@ -45,11 +38,9 @@ public sealed class EngineHost
             {
                 Console.Error.WriteLine(e);
             }
-
-            simulationThread?.Join();
-
-            lifetime.MarkStopped();
-            Application.Detach(lifetime);
+            
+            _lifetime.MarkStopped();
+            Application.Detach(_lifetime);
         }
     }
 }
