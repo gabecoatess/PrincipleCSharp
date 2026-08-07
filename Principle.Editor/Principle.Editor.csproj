@@ -8,7 +8,7 @@
     <Title>$(EditorName)</Title>
     <Product>$(EngineName)</Product>
     <Version>$(EditorVersion)</Version>
-    <LangVersion>13</LangVersion>
+    <LangVersion>preview</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>
