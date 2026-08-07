@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "Principle.Runtime": {
+      "commandName": "Project",
+      "commandLineArgs": "-nw"
+    }
+  }
+}
