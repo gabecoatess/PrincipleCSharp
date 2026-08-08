@@ -93,7 +93,7 @@ public class TickScheduler
         return _scheduledTicks.Remove(name);
     }
 
-    public double TryGetTickScheduleTickRate(string name)
+    public double GetTickScheduleTickRate(string name)
     {
         if (string.IsNullOrWhiteSpace(name))
         {
