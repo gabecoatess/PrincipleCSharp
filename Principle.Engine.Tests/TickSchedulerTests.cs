@@ -7,12 +7,12 @@ namespace Principle.Engine.Tests;
 public class TickSchedulerTests
 {
     [Theory]
-    [InlineData(-1)]
-    [InlineData(-30)]
-    [InlineData(0)]
-    [InlineData(129)]
-    [InlineData(230)]
-    public void AddTickSchedule_CreateWithInvalidTickRate_ThrowsException(int tickRate)
+    [InlineData(-30.0)]
+    [InlineData(-1.0)]
+    [InlineData(0.0)]
+    [InlineData(129.0)]
+    [InlineData(230.0)]
+    public void AddTickSchedule_CreateWithInvalidTickRate_ThrowsException(double tickRate)
     {
         // Arrange
         var tickScheduler = new TickScheduler();
@@ -24,12 +24,13 @@ public class TickSchedulerTests
     }
 
     [Theory]
-    [InlineData(1)]
-    [InlineData(20)]
-    [InlineData(60)]
-    [InlineData(103)]
-    [InlineData(128)]
-    public void AddTickSchedule_CreateWithValidTickRate_DoesNotThrow(int tickRate)
+    [InlineData(0.2)]
+    [InlineData(1.0)]
+    [InlineData(20.0)]
+    [InlineData(60.0)]
+    [InlineData(103.5)]
+    [InlineData(128.0)]
+    public void AddTickSchedule_CreateWithValidTickRate_DoesNotThrow(double tickRate)
     {
         // Arrange
         var tickScheduler = new TickScheduler();
@@ -41,7 +42,6 @@ public class TickSchedulerTests
 
     [Theory]
     [InlineData("")]
-    [InlineData(null)]
     [InlineData(" ")]
     [InlineData("    ")]
     public void AddTickSchedule_CreateWithEmptyName_ThrowsException(string name)
@@ -52,7 +52,7 @@ public class TickSchedulerTests
 
         // Act & Assert
         Should.Throw<ArgumentException>(() =>
-            tickScheduler.AddTickSchedule(name, mockTickSchedule.Object, 20));
+            tickScheduler.AddTickSchedule(name, mockTickSchedule.Object));
     }
 
     [Theory]
@@ -65,7 +65,7 @@ public class TickSchedulerTests
         var mockTickSchedule = new Mock<ITickSchedule>();
 
         // Act & Assert
-        Should.NotThrow(() => tickScheduler.AddTickSchedule(name, mockTickSchedule.Object, 20));
+        Should.NotThrow(() => tickScheduler.AddTickSchedule(name, mockTickSchedule.Object));
     }
 
     [Fact]
@@ -78,8 +78,38 @@ public class TickSchedulerTests
         // Act & Assert
         Should.Throw<InvalidOperationException>(() =>
         {
-            tickScheduler.AddTickSchedule("Schedule", mockTickSchedule.Object, 20);
-            tickScheduler.AddTickSchedule("Schedule", mockTickSchedule.Object, 20);
+            tickScheduler.AddTickSchedule("Schedule", mockTickSchedule.Object);
+            tickScheduler.AddTickSchedule("Schedule", mockTickSchedule.Object);
         });
+    }
+
+    [Fact]
+    public void AddTickSchedule_CreateWithOverwriteEnabled_DoesNotThrow()
+    {
+        // Arrange
+        var tickScheduler = new TickScheduler();
+        var mockTickSchedule = new Mock<ITickSchedule>();
+
+        // Act & Assert
+        Should.NotThrow(() =>
+        {
+            tickScheduler.AddTickSchedule("Schedule", mockTickSchedule.Object);
+            tickScheduler.AddTickSchedule("Schedule", mockTickSchedule.Object, overwrite: true);
+        });
+    }
+
+    [Fact]
+    public void AddTickSchedule_CreateWithOverwriteEnabled_TickRateOverwritten()
+    {
+        // Arrange
+        var tickScheduler = new TickScheduler();
+        var mockTickSchedule = new Mock<ITickSchedule>();
+
+        // Act
+        tickScheduler.AddTickSchedule("Schedule", mockTickSchedule.Object);
+        tickScheduler.AddTickSchedule("Schedule", mockTickSchedule.Object, 33.3, overwrite: true);
+
+        // Assert
+        tickScheduler.TryGetTickScheduleTickRate("Schedule").ShouldBe(33.3);
     }
 }
