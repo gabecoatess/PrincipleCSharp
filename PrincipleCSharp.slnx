@@ -1,5 +1,6 @@
 <Solution>
   <Project Path="Principle.Contracts\Principle.Contracts.csproj" />
+  <Project Path="Principle.ECS/Principle.ECS.csproj" Id="fc1f0348-20c6-4525-9cef-bcd1f76d2f26" />
   <Project Path="Principle.Editor/Principle.Editor.csproj" />
   <Project Path="Principle.Engine.Tests/Principle.Engine.Tests.csproj" Id="525bae4b-3875-4c6b-bf4f-982ea30f47c8" />
   <Project Path="Principle.Engine/Principle.Engine.csproj" />
