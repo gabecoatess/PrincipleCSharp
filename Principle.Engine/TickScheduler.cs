@@ -7,7 +7,7 @@ public class TickScheduler
 {
     public int TickCount { get; private set; }
 
-    public const int MaxTickRate = 128;
+    public const double MaxTickRate = 128.0;
 
     private const double TargetElapsedTime = 1.0 / MaxTickRate;
     private double _accumulator;
@@ -51,11 +51,11 @@ public class TickScheduler
         Thread.Sleep(1);
     }
 
-    public void AddTickSchedule(string scheduleName, ITickSchedule tickSchedule, int tickRate = 20, bool overwrite = false)
+    public void AddTickSchedule(string scheduleName, ITickSchedule tickSchedule, double tickRate = 20.0, bool overwrite = false)
     {
-        if (tickRate is < 1 or > MaxTickRate)
+        if (tickRate is <= 0.0 or > MaxTickRate)
         {
-            throw new ArgumentOutOfRangeException(nameof(tickRate), $"Tick rate must be between 1 and {MaxTickRate}.");
+            throw new ArgumentOutOfRangeException(nameof(tickRate), $"Tick rate must be greater than 0 and less than or equal to {MaxTickRate}.");
         }
 
         if (string.IsNullOrWhiteSpace(scheduleName))
@@ -91,6 +91,21 @@ public class TickScheduler
         }
 
         return _scheduledTicks.Remove(name);
+    }
+
+    public double TryGetTickScheduleTickRate(string name)
+    {
+        if (string.IsNullOrWhiteSpace(name))
+        {
+            throw new ArgumentException("Schedule name cannot be null or whitespace.", nameof(name));
+        }
+
+        if (_scheduledTicks.TryGetValue(name, out var scheduledTick))
+        {
+            return scheduledTick.TickRate;
+        }
+
+        throw new InvalidOperationException("Schedule not found.");
     }
 
     private void RunSchedulerTick(double elapsedSeconds)
