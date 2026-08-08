@@ -110,6 +110,6 @@ public class TickSchedulerTests
         tickScheduler.AddTickSchedule("Schedule", mockTickSchedule.Object, 33.3, overwrite: true);
 
         // Assert
-        tickScheduler.TryGetTickScheduleTickRate("Schedule").ShouldBe(33.3);
+        tickScheduler.GetTickScheduleTickRate("Schedule").ShouldBe(33.3);
     }
 }
