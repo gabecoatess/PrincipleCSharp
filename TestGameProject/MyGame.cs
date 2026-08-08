@@ -12,14 +12,25 @@ public class MyGame : PrincipleGame
 
     protected override void OnInitialize()
     {
-        _world.Create(new Health(100.0f), new Hunger(100.0f), new PlayerTag());
+        _world.Create(
+            new HealthComponent(100.0f),
+            new IsDeadComponent(false),
+            new PlayerTag()
+        );
 
         for (var i = 0; i < 3; i++)
         {
-            _world.Create(new Health(50.0f), new ZombieTag());
+            _world.Create(
+                new HealthComponent(50.0f),
+                new HungerComponent(100.0f),
+                new IsDeadComponent(false),
+                new ZombieTag()
+            );
         }
 
-        TickScheduler.AddTickSchedule(nameof(HungerDepletion), new HungerDepletion(_world), 2.0);
+        TickScheduler.AddTickSchedule(nameof(HungerDepletionSystem), new HungerDepletionSystem(_world), 2.0);
+        TickScheduler.AddTickSchedule(nameof(EatPlayerSystem), new EatPlayerSystem(_world), 1.0);
+        TickScheduler.AddTickSchedule(nameof(HealthSystem), new HealthSystem(_world), 30.0);
     }
 
     protected override void OnShutdown() => _world.Dispose();

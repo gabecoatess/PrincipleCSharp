@@ -1,3 +1,3 @@
 namespace TestGameProject.Components;
 
-internal record struct Health(float Value);
+internal record struct HealthComponent(float Value);
