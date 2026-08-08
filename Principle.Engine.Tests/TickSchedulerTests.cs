@@ -128,6 +128,24 @@ public class TickSchedulerTests
     }
 
     [Fact]
+    public void AddTickSchedule_OverwriteExistingSchedule_ReplacesScheduledBehavior()
+    {
+        // Arrange
+        var tickScheduler = new TickScheduler();
+        var mockTickScheduleA = new Mock<ITickSchedule>();
+        var mockTickScheduleB = new Mock<ITickSchedule>();
+
+        tickScheduler.AddTickSchedule("Schedule", mockTickScheduleA.Object);
+
+        // Act
+        tickScheduler.AddTickSchedule("Schedule", mockTickScheduleB.Object, overwrite: true);
+
+        // Assert
+        tickScheduler.TryGetTickSchedule("Schedule", out var retrievedSchedule).ShouldBeTrue();
+        retrievedSchedule.ShouldBe(mockTickScheduleB.Object);
+    }
+
+    [Fact]
     public void TryGetTickSchedule_LookupExistingScheduleByName_RecoverExistingSchedule()
     {
         // Arrange
