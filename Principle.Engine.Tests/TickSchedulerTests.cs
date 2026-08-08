@@ -143,4 +143,23 @@ public class TickSchedulerTests
         result.ShouldBeTrue();
         retrievedSchedule.ShouldNotBeNull();
     }
+
+    [Fact]
+    public void RemoveTickSchedule_TryToRemoveRegisteredSchedule_RegisteredScheduleIsRemoved()
+    {
+        // Arrange
+        var tickScheduler = new TickScheduler();
+        var mockTickSchedule = new Mock<ITickSchedule>();
+
+        tickScheduler.AddTickSchedule("Schedule", mockTickSchedule.Object);
+
+        // Act
+        var result = tickScheduler.RemoveTickSchedule("Schedule");
+        var existingSchedule = tickScheduler.TryGetTickSchedule("Schedule", out var retrievedSchedule);
+
+        // Assert
+        result.ShouldBeTrue();
+        existingSchedule.ShouldBeFalse();
+        retrievedSchedule.ShouldBeNull();
+    }
 }
