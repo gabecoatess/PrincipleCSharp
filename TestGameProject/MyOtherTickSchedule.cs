@@ -1,12 +1,12 @@
-﻿using Principle.Contracts;
-using Principle.Engine;
 using System.Diagnostics;
+using Principle.Contracts;
+using Principle.Engine;
 
 namespace TestGameProject;
 
 public class MyOtherTickSchedule : ITickSchedule
 {
-    private int _counter = 0;
+    private int _counter;
 
     public void Tick()
     {

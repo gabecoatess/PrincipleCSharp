@@ -1,4 +1,3 @@
-using Principle.Contracts;
 using System.Diagnostics;
 
 namespace Principle.Engine;
@@ -7,20 +6,9 @@ public abstract class PrincipleGame
 {
     public TickScheduler TickScheduler { get; private set; } = new TickScheduler();
 
-    internal void PreInitialize()
-    {
-        OnPreInitialize();
-    }
-
-    internal void Initialize()
-    {
-        OnInitialize();
-    }
-
-    internal void PostInitialize()
-    {
-        OnPostInitialize();
-    }
+    internal void PreInitialize() => OnPreInitialize();
+    internal void Initialize() => OnInitialize();
+    internal void PostInitialize() => OnPostInitialize();
 
     internal void Shutdown()
     {
@@ -37,29 +25,10 @@ public abstract class PrincipleGame
             OnShutdown();
         }
     }
-    
-    protected virtual void OnPreInitialize()
-    {
-        Debug.WriteLine("[Engine] PreInitialize");
-    }
 
-    protected virtual void OnInitialize()
-    {
-        Debug.WriteLine("[Engine] Initialize");
-    }
-
-    protected virtual void OnPostInitialize()
-    {
-        Debug.WriteLine("[Engine] PostInitialize");
-    }
-
-    protected virtual void OnPreShutdown()
-    {
-        Debug.WriteLine("[Engine] PreShutdown");
-    }
-
-    protected virtual void OnShutdown()
-    {
-        Debug.WriteLine("[Engine] Shutdown");
-    }
+    protected virtual void OnPreInitialize() => Debug.WriteLine("[Engine] PreInitialize");
+    protected virtual void OnInitialize() => Debug.WriteLine("[Engine] Initialize");
+    protected virtual void OnPostInitialize() => Debug.WriteLine("[Engine] PostInitialize");
+    protected virtual void OnPreShutdown() => Debug.WriteLine("[Engine] PreShutdown");
+    protected virtual void OnShutdown() => Debug.WriteLine("[Engine] Shutdown");
 }

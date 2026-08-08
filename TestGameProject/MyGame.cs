@@ -1,4 +1,4 @@
-﻿using Principle.Engine;
+using Principle.Engine;
 
 namespace TestGameProject;
 

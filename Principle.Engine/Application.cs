@@ -2,30 +2,25 @@ namespace Principle.Engine;
 
 public static class Application
 {
-    public static bool IsRunning => Lifetime?.IsRunning ?? false;
-    
-    private static IApplicationLifetime? Lifetime = null;
+    private static IApplicationLifetime? _lifetime;
 
-    public static void Quit()
-    {
-        Lifetime?.RequestShutdown();
-    }
+    public static void Quit() => _lifetime?.RequestShutdown();
 
     internal static void Attach(IApplicationLifetime lifetime)
     {
-        if (Lifetime is not null)
+        if (_lifetime is not null)
         {
             throw new InvalidOperationException("[Engine] Application already attached");
         }
-        
-        Lifetime = lifetime;
+
+        _lifetime = lifetime;
     }
 
     internal static void Detach(IApplicationLifetime lifetime)
     {
-        if (ReferenceEquals(Lifetime, lifetime))
+        if (ReferenceEquals(_lifetime, lifetime))
         {
-            Lifetime = null;
+            _lifetime = null;
         }
     }
 }

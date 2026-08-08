@@ -1,16 +1,15 @@
-﻿using Principle.Contracts;
+using System.Diagnostics;
 using Principle.Engine;
 using Principle.Rendering.Abstractions;
 using Principle.Rendering.Raylib;
-using System.Diagnostics;
 using TestGameProject;
 
 namespace Principle.Runtime;
 
 public static class Program
 {
-    private static bool OpenWindow = true;
-    
+    private static bool _openWindow = true;
+
     public static void Main(string[] args)
     {
         if (args.Length > 0)
@@ -18,80 +17,76 @@ public static class Program
             ParseArgs(args);
         }
 
-        EngineHost host = new EngineHost();
+        var host = new EngineHost();
 
-        Thread engineHostThread = new Thread(() => host.Run(new MyGame()));
+        var engineHostThread = new Thread(() => host.Run(new MyGame()));
         engineHostThread.Start();
 
-        bool windowCreated = false;
-        
-        if (OpenWindow)
+        if (_openWindow)
         {
+            var windowCreated = false;
             var window = RaylibBackend.CreateSession(new Platform.WindowDescription(
                 "Principle Engine", 800, 600, IsResizable: true, IsVisible: true));
 
-            if (window.IsSuccess == false)
+            if (window.IsSuccess)
             {
                 throw new Exception("Failed to create window: " + window.Error?.Message);
             }
 
             windowCreated = true;
 
-            using (var session = window.Value)
+            using var session = window.Value;
+            var shouldClose = false;
+
+            while (shouldClose)
             {
-                bool shouldClose = false;
-                while (shouldClose == false)
+                var polled = session.Window.PollEvents();
+                if (!polled.IsSuccess)
                 {
-                    var polled = session.Window.PollEvents();
-                    if (!polled.IsSuccess)
-                    {
-                        throw new Exception("Failed to poll events: " + polled.Error?.Message);
-                    }
-
-                    var resize = session.ApplyWindowResize(polled.Value);
-                    if (!resize.IsSuccess)
-                    {
-                        throw new Exception("Failed to apply window resize: " + resize.Error?.Message);
-                    }
-
-                    var rendered = session.RenderToWindow(RenderFrame.Create(new ClearTargetCommand(new RenderColor(24, 32, 48)), new DrawRectangleCommand(new RenderRectangle(64, 64, 96, 80), new RenderColor(224, 72, 88))));
-                    if (!rendered.IsSuccess)
-                    {
-                        throw new Exception("Failed to render to window: " + rendered.Error?.Message);
-                    }
-
-                    shouldClose = polled.Value.CloseRequested;
+                    throw new Exception("Failed to poll events: " + polled.Error?.Message);
                 }
 
-                if (windowCreated)
+                var resize = session.ApplyWindowResize(polled.Value);
+                if (!resize.IsSuccess)
                 {
-                    host.RequestShutdown();
+                    throw new Exception("Failed to apply window resize: " + resize.Error?.Message);
                 }
 
-                engineHostThread.Join();
+                var rendered = session.RenderToWindow(RenderFrame.Create(new ClearTargetCommand(new RenderColor(24, 32, 48)), new DrawRectangleCommand(new RenderRectangle(64, 64, 96, 80), new RenderColor(224, 72, 88))));
+                if (!rendered.IsSuccess)
+                {
+                    throw new Exception("Failed to render to window: " + rendered.Error?.Message);
+                }
+
+                shouldClose = polled.Value.CloseRequested;
             }
+
+            if (windowCreated)
+            {
+                host.RequestShutdown();
+            }
+
+            engineHostThread.Join();
         }
         else
         {
             host.RequestShutdown();
             engineHostThread.Join();
         }
-        
+
     }
 
     private static void ParseArgs(string[] args)
     {
-        foreach (string arg in args)
+        foreach (var arg in args)
         {
             Debug.WriteLine($"[Runtime] Used arg: '{arg}'");
 
-            switch (arg)
+            _openWindow = arg switch
             {
-                case "-nw":
-                case "--no-window":
-                    OpenWindow = false;
-                    break;
-            }
+                "-nw" or "--no-window" => false,
+                _ => _openWindow
+            };
         }
     }
 }

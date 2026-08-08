@@ -2,5 +2,5 @@ namespace Principle.Contracts;
 
 public interface ITickSchedule
 {
-    void Tick();
+    public void Tick();
 }
