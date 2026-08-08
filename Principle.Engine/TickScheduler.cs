@@ -51,14 +51,46 @@ public class TickScheduler
         Thread.Sleep(1);
     }
 
-    public void AddTickSchedule(string scheduleName, ITickSchedule tickSchedule, int tickRate = 20)
+    public void AddTickSchedule(string scheduleName, ITickSchedule tickSchedule, int tickRate = 20, bool overwrite = false)
     {
         if (tickRate is < 1 or > MaxTickRate)
         {
-            throw new ArgumentOutOfRangeException(nameof(tickRate), $"Tick rate must be between 1 and {MaxTickRate}");
+            throw new ArgumentOutOfRangeException(nameof(tickRate), $"Tick rate must be between 1 and {MaxTickRate}.");
+        }
+
+        if (string.IsNullOrWhiteSpace(scheduleName))
+        {
+            throw new ArgumentException("Schedule name cannot be null or whitespace.", nameof(scheduleName));
+        }
+
+        if (!overwrite && _scheduledTicks.ContainsKey(scheduleName))
+        {
+            throw new InvalidOperationException("A schedule with the same name already exists.");
         }
 
         _scheduledTicks[scheduleName] = new ScheduledTick { Schedule = tickSchedule, TickRate = tickRate };
+    }
+
+    public bool TryGetTickSchedule(string scheduleName, out ITickSchedule? tickSchedule)
+    {
+        if (_scheduledTicks.TryGetValue(scheduleName, out var scheduledTick))
+        {
+            tickSchedule = scheduledTick.Schedule;
+            return true;
+        }
+
+        tickSchedule = null;
+        return false;
+    }
+
+    public bool RemoveTickSchedule(string name)
+    {
+        if (string.IsNullOrWhiteSpace(name))
+        {
+            throw new ArgumentException("Schedule name cannot be null or whitespace.", nameof(name));
+        }
+
+        return _scheduledTicks.Remove(name);
     }
 
     private void RunSchedulerTick(double elapsedSeconds)
