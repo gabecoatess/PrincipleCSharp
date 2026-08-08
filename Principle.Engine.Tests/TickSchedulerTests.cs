@@ -126,4 +126,21 @@ public class TickSchedulerTests
         // Assert
         tickScheduler.GetTickScheduleTickRate("Schedule").ShouldBe(20.0);
     }
+
+    [Fact]
+    public void TryGetTickSchedule_LookupExistingScheduleByName_RecoverExistingSchedule()
+    {
+        // Arrange
+        var tickScheduler = new TickScheduler();
+        var mockTickSchedule = new Mock<ITickSchedule>();
+
+        tickScheduler.AddTickSchedule("Schedule", mockTickSchedule.Object);
+
+        // Act
+        var result = tickScheduler.TryGetTickSchedule("Schedule", out var retrievedSchedule);
+
+        // Assert
+        result.ShouldBeTrue();
+        retrievedSchedule.ShouldNotBeNull();
+    }
 }
