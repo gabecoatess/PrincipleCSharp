@@ -112,4 +112,18 @@ public class TickSchedulerTests
         // Assert
         tickScheduler.GetTickScheduleTickRate("Schedule").ShouldBe(33.3);
     }
+
+    [Fact]
+    public void AddTickSchedule_CreateWithNoTickRateSpecified_DefaultTickRateApplied()
+    {
+        // Arrange
+        var tickScheduler = new TickScheduler();
+        var mockTickSchedule = new Mock<ITickSchedule>();
+
+        // Act
+        tickScheduler.AddTickSchedule("Schedule", mockTickSchedule.Object);
+
+        // Assert
+        tickScheduler.GetTickScheduleTickRate("Schedule").ShouldBe(20.0);
+    }
 }
