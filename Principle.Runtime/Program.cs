@@ -24,16 +24,13 @@ public static class Program
 
         if (_openWindow)
         {
-            var windowCreated = false;
             var window = RaylibBackend.CreateSession(new Platform.WindowDescription(
                 "Principle Engine", 800, 600, IsResizable: true, IsVisible: true));
 
-            if (window.IsSuccess)
+            if (!window.IsSuccess)
             {
                 throw new Exception("Failed to create window: " + window.Error?.Message);
             }
-
-            windowCreated = true;
 
             using var session = window.Value;
             var shouldClose = false;
@@ -60,20 +57,10 @@ public static class Program
 
                 shouldClose = polled.Value.CloseRequested;
             }
-
-            if (windowCreated)
-            {
-                host.RequestShutdown();
-            }
-
-            engineHostThread.Join();
-        }
-        else
-        {
-            host.RequestShutdown();
-            engineHostThread.Join();
         }
 
+        host.RequestShutdown();
+        engineHostThread.Join();
     }
 
     private static void ParseArgs(string[] args)
