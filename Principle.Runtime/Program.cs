@@ -38,7 +38,7 @@ public static class Program
             using var session = window.Value;
             var shouldClose = false;
 
-            while (shouldClose)
+            while (!shouldClose)
             {
                 var polled = session.Window.PollEvents();
                 if (!polled.IsSuccess)
