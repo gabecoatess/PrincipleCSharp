@@ -1,10 +1,8 @@
-using Principle.Contracts;
-
-namespace Principle.Engine;
+﻿namespace Principle.Engine;
 
 internal sealed class ScheduledTick
 {
-    public required ITickSchedule Schedule { get; init; }
+    public required TickSchedule Schedule { get; init; }
     public double TickRate { get; init; }
     public double Accumulator { get; set; }
 }

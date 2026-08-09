@@ -28,9 +28,13 @@ public class MyGame : PrincipleGame
             );
         }
 
-        TickScheduler.AddTickSchedule(nameof(HungerDepletionSystem), new HungerDepletionSystem(_world), 2.0);
-        TickScheduler.AddTickSchedule(nameof(EatPlayerSystem), new EatPlayerSystem(_world), 1.0);
-        TickScheduler.AddTickSchedule(nameof(HealthSystem), new HealthSystem(_world), 30.0);
+        var twoHz = TickScheduler.AddTickSchedule("TwoHz", 2.0);
+        var oneHz = TickScheduler.AddTickSchedule("OneHz", 1.0);
+        var thirtyHz = TickScheduler.AddTickSchedule("ThirtyHz", 30.0);
+
+        twoHz.AddSystem(new HungerDepletionSystem(_world));
+        oneHz.AddSystem(new EatPlayerSystem(_world));
+        thirtyHz.AddSystem(new HealthSystem(_world));
     }
 
     protected override void OnShutdown() => _world.Dispose();

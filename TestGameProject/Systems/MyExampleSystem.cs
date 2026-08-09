@@ -1,9 +1,9 @@
 using System.Diagnostics;
-using Principle.Contracts;
+using Principle.ECS;
 
 namespace TestGameProject;
 
-public class MyTickSchedule : ITickSchedule
+public class MyExampleSystem : IPrincipleSystem
 {
     public void Tick() => Debug.WriteLine($"Full second");
 }

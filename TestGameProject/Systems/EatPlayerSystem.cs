@@ -1,12 +1,12 @@
 using System.Diagnostics;
 using Arch.Core;
-using Principle.Contracts;
+using Principle.ECS;
 using TestGameProject.Components;
 using TestGameProject.Tags;
 
 namespace TestGameProject.Systems;
 
-internal class EatPlayerSystem(World world) : ITickSchedule
+internal class EatPlayerSystem(World world) : IPrincipleSystem
 {
     private static readonly QueryDescription Query = new QueryDescription().WithAll<HungerComponent, ZombieTag>();
     private static readonly QueryDescription PlayerQuery = new QueryDescription().WithAll<HealthComponent, IsDeadComponent, PlayerTag>();

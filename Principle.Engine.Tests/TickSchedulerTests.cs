@@ -1,5 +1,5 @@
 using Moq;
-using Principle.Contracts;
+using Principle.ECS;
 using Shouldly;
 
 namespace Principle.Engine.Tests;
@@ -16,11 +16,10 @@ public class TickSchedulerTests
     {
         // Arrange
         var tickScheduler = new TickScheduler();
-        var mockTickSchedule = new Mock<ITickSchedule>();
 
         // Act & Assert
         Should.Throw<ArgumentOutOfRangeException>(() =>
-            tickScheduler.AddTickSchedule("Schedule", mockTickSchedule.Object, tickRate));
+            tickScheduler.AddTickSchedule("Schedule", tickRate));
     }
 
     [Theory]
@@ -34,10 +33,9 @@ public class TickSchedulerTests
     {
         // Arrange
         var tickScheduler = new TickScheduler();
-        var mockTickSchedule = new Mock<ITickSchedule>();
 
         // Act & Assert
-        Should.NotThrow(() => tickScheduler.AddTickSchedule("Schedule", mockTickSchedule.Object, tickRate));
+        Should.NotThrow(() => tickScheduler.AddTickSchedule("Schedule", tickRate));
     }
 
     [Theory]
@@ -48,11 +46,10 @@ public class TickSchedulerTests
     {
         // Arrange
         var tickScheduler = new TickScheduler();
-        var mockTickSchedule = new Mock<ITickSchedule>();
 
         // Act & Assert
         Should.Throw<ArgumentException>(() =>
-            tickScheduler.AddTickSchedule(name, mockTickSchedule.Object));
+            tickScheduler.AddTickSchedule(name));
     }
 
     [Theory]
@@ -62,10 +59,9 @@ public class TickSchedulerTests
     {
         // Arrange
         var tickScheduler = new TickScheduler();
-        var mockTickSchedule = new Mock<ITickSchedule>();
 
         // Act & Assert
-        Should.NotThrow(() => tickScheduler.AddTickSchedule(name, mockTickSchedule.Object));
+        Should.NotThrow(() => tickScheduler.AddTickSchedule(name));
     }
 
     [Fact]
@@ -73,13 +69,12 @@ public class TickSchedulerTests
     {
         // Arrange
         var tickScheduler = new TickScheduler();
-        var mockTickSchedule = new Mock<ITickSchedule>();
 
         // Act & Assert
         Should.Throw<InvalidOperationException>(() =>
         {
-            tickScheduler.AddTickSchedule("Schedule", mockTickSchedule.Object);
-            tickScheduler.AddTickSchedule("Schedule", mockTickSchedule.Object);
+            tickScheduler.AddTickSchedule("Schedule");
+            tickScheduler.AddTickSchedule("Schedule");
         });
     }
 
@@ -88,13 +83,12 @@ public class TickSchedulerTests
     {
         // Arrange
         var tickScheduler = new TickScheduler();
-        var mockTickSchedule = new Mock<ITickSchedule>();
 
         // Act & Assert
         Should.NotThrow(() =>
         {
-            tickScheduler.AddTickSchedule("Schedule", mockTickSchedule.Object);
-            tickScheduler.AddTickSchedule("Schedule", mockTickSchedule.Object, overwrite: true);
+            tickScheduler.AddTickSchedule("Schedule");
+            tickScheduler.AddTickSchedule("Schedule", overwrite: true);
         });
     }
 
@@ -103,11 +97,10 @@ public class TickSchedulerTests
     {
         // Arrange
         var tickScheduler = new TickScheduler();
-        var mockTickSchedule = new Mock<ITickSchedule>();
 
         // Act
-        tickScheduler.AddTickSchedule("Schedule", mockTickSchedule.Object);
-        tickScheduler.AddTickSchedule("Schedule", mockTickSchedule.Object, 33.3, overwrite: true);
+        tickScheduler.AddTickSchedule("Schedule");
+        tickScheduler.AddTickSchedule("Schedule", 33.3, overwrite: true);
 
         // Assert
         tickScheduler.GetTickScheduleTickRate("Schedule").ShouldBe(33.3);
@@ -118,10 +111,9 @@ public class TickSchedulerTests
     {
         // Arrange
         var tickScheduler = new TickScheduler();
-        var mockTickSchedule = new Mock<ITickSchedule>();
 
         // Act
-        tickScheduler.AddTickSchedule("Schedule", mockTickSchedule.Object);
+        tickScheduler.AddTickSchedule("Schedule");
 
         // Assert
         tickScheduler.GetTickScheduleTickRate("Schedule").ShouldBe(20.0);
@@ -132,17 +124,20 @@ public class TickSchedulerTests
     {
         // Arrange
         var tickScheduler = new TickScheduler();
-        var mockTickScheduleA = new Mock<ITickSchedule>();
-        var mockTickScheduleB = new Mock<ITickSchedule>();
+        var systemA = new Mock<IPrincipleSystem>();
+        var systemB = new Mock<IPrincipleSystem>();
 
-        tickScheduler.AddTickSchedule("Schedule", mockTickScheduleA.Object);
+        var tickSchedule = tickScheduler.AddTickSchedule("Schedule");
+        tickSchedule.AddSystem("SystemA", systemA.Object);
 
         // Act
-        tickScheduler.AddTickSchedule("Schedule", mockTickScheduleB.Object, overwrite: true);
+        var newSchedule = tickScheduler.AddTickSchedule("Schedule", overwrite: true);
+        newSchedule.AddSystem("SystemB", systemB.Object);
 
         // Assert
-        tickScheduler.TryGetTickSchedule("Schedule", out var retrievedSchedule).ShouldBeTrue();
-        retrievedSchedule.ShouldBe(mockTickScheduleB.Object);
+        newSchedule.ShouldNotBeSameAs(tickSchedule);
+        newSchedule.GetSystem("SystemA").ShouldBeNull();
+        newSchedule.GetSystem("SystemB").ShouldBeSameAs(systemB.Object);
     }
 
     [Fact]
@@ -150,9 +145,8 @@ public class TickSchedulerTests
     {
         // Arrange
         var tickScheduler = new TickScheduler();
-        var mockTickSchedule = new Mock<ITickSchedule>();
 
-        tickScheduler.AddTickSchedule("Schedule", mockTickSchedule.Object);
+        tickScheduler.AddTickSchedule("Schedule");
 
         // Act
         var result = tickScheduler.TryGetTickSchedule("Schedule", out var retrievedSchedule);
@@ -167,9 +161,8 @@ public class TickSchedulerTests
     {
         // Arrange
         var tickScheduler = new TickScheduler();
-        var mockTickSchedule = new Mock<ITickSchedule>();
 
-        tickScheduler.AddTickSchedule("Schedule", mockTickSchedule.Object);
+        tickScheduler.AddTickSchedule("Schedule");
 
         // Act
         var result = tickScheduler.RemoveTickSchedule("Schedule");
@@ -186,7 +179,6 @@ public class TickSchedulerTests
     {
         // Arrange
         var tickScheduler = new TickScheduler();
-        var mockTickSchedule = new Mock<ITickSchedule>();
 
         // Act
         var result = tickScheduler.RemoveTickSchedule("Schedule");

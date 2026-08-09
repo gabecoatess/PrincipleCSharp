@@ -1,5 +1,4 @@
 using System.Diagnostics;
-using Principle.Contracts;
 
 namespace Principle.Engine;
 
@@ -51,7 +50,7 @@ public class TickScheduler
         Thread.Sleep(1);
     }
 
-    public void AddTickSchedule(string scheduleName, ITickSchedule tickSchedule, double tickRate = 20.0, bool overwrite = false)
+    public TickSchedule AddTickSchedule(string scheduleName, double tickRate = 20.0, bool overwrite = false)
     {
         if (tickRate is <= 0.0 or > MaxTickRate)
         {
@@ -68,10 +67,13 @@ public class TickScheduler
             throw new InvalidOperationException("A schedule with the same name already exists.");
         }
 
-        _scheduledTicks[scheduleName] = new ScheduledTick { Schedule = tickSchedule, TickRate = tickRate };
+        var newTickSchedule = new TickSchedule();
+        _scheduledTicks[scheduleName] = new ScheduledTick { Schedule = newTickSchedule, TickRate = tickRate };
+
+        return newTickSchedule;
     }
 
-    public bool TryGetTickSchedule(string scheduleName, out ITickSchedule? tickSchedule)
+    public bool TryGetTickSchedule(string scheduleName, out TickSchedule? tickSchedule)
     {
         if (_scheduledTicks.TryGetValue(scheduleName, out var scheduledTick))
         {
