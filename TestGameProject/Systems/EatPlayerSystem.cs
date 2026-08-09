@@ -9,7 +9,7 @@ namespace TestGameProject.Systems;
 internal class EatPlayerSystem(World world) : IPrincipleSystem
 {
     private static readonly QueryDescription Query = new QueryDescription().WithAll<HungerComponent, ZombieTag>();
-    private static readonly QueryDescription PlayerQuery = new QueryDescription().WithAll<HealthComponent, IsDeadComponent, PlayerTag>();
+    private static readonly QueryDescription PlayerQuery = new QueryDescription().WithAll<HealthComponent, PlayerTag>();
 
     public void Tick()
     {
@@ -17,9 +17,9 @@ internal class EatPlayerSystem(World world) : IPrincipleSystem
         {
             if (hungerComponent.Value < 50.0f)
             {
-                world.Query(in PlayerQuery, (ref HealthComponent healthComponent, ref IsDeadComponent isDeadComponent) =>
+                world.Query(in PlayerQuery, (ref HealthComponent healthComponent) =>
                 {
-                    if (!(healthComponent.Value > 0.0f) || isDeadComponent.Value)
+                    if (healthComponent.Value <= 0.0f)
                     {
                         return;
                     }

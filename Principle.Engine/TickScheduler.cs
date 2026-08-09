@@ -2,7 +2,7 @@ using System.Diagnostics;
 
 namespace Principle.Engine;
 
-public class TickScheduler
+public class TickScheduler(SimulationContext context)
 {
     public int TickCount { get; private set; }
 
@@ -11,6 +11,8 @@ public class TickScheduler
     private const double TargetElapsedTime = 1.0 / MaxTickRate;
     private double _accumulator;
     private long _lastTimestamp;
+
+    private readonly SimulationContext _context = context ?? throw new ArgumentNullException(nameof(context));
 
     private readonly Dictionary<string, ScheduledTick> _scheduledTicks = [];
 
@@ -125,5 +127,7 @@ public class TickScheduler
                 scheduledTick.Accumulator -= scheduleInterval;
             }
         }
+
+        _context.Commit();
     }
 }

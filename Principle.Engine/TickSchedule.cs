@@ -1,11 +1,10 @@
-using Arch.Core;
 using Principle.ECS;
 
 namespace Principle.Engine;
 
 public sealed class TickSchedule
 {
-    private readonly Dictionary<string, IPrincipleSystem> _systems = new Dictionary<string, IPrincipleSystem>();
+    private readonly Dictionary<string, IPrincipleSystem> _systems = new();
 
     public void Tick()
     {

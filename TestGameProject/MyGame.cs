@@ -6,15 +6,23 @@ using TestGameProject.Tags;
 
 namespace TestGameProject;
 
-public class MyGame : PrincipleGame
+public sealed class MyGame : PrincipleGame
 {
-    private readonly World _world = World.Create();
+    private readonly World _world;
+
+    public MyGame() : this(World.Create())
+    {
+    }
+
+    private MyGame(World world) : base(world)
+    {
+        _world = world;
+    }
 
     protected override void OnInitialize()
     {
         _world.Create(
             new HealthComponent(100.0f),
-            new IsDeadComponent(false),
             new PlayerTag()
         );
 
@@ -23,7 +31,6 @@ public class MyGame : PrincipleGame
             _world.Create(
                 new HealthComponent(50.0f),
                 new HungerComponent(100.0f),
-                new IsDeadComponent(false),
                 new ZombieTag()
             );
         }
@@ -34,8 +41,8 @@ public class MyGame : PrincipleGame
 
         twoHz.AddSystem(new HungerDepletionSystem(_world));
         oneHz.AddSystem(new EatPlayerSystem(_world));
-        thirtyHz.AddSystem(new HealthSystem(_world));
+        thirtyHz.AddSystem(new HealthSystem(_world, Context.Commands));
     }
 
-    protected override void OnShutdown() => _world.Dispose();
+    protected override void OnShutdown() => Context.Dispose();
 }

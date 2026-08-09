@@ -1,14 +1,22 @@
 using System.Diagnostics;
+using Arch.Core;
 
 namespace Principle.Engine;
 
 public abstract class PrincipleGame
 {
-    public TickScheduler TickScheduler { get; private set; } = new TickScheduler();
+    protected SimulationContext Context { get; }
+    public TickScheduler TickScheduler { get; }
 
     internal void PreInitialize() => OnPreInitialize();
     internal void Initialize() => OnInitialize();
     internal void PostInitialize() => OnPostInitialize();
+
+    protected PrincipleGame(World world)
+    {
+        Context = new SimulationContext(world);
+        TickScheduler = new TickScheduler(Context);
+    }
 
     internal void Shutdown()
     {

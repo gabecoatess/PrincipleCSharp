@@ -1,3 +1,4 @@
+using Arch.Core;
 using Moq;
 using Principle.ECS;
 using Shouldly;
@@ -15,7 +16,9 @@ public class TickSchedulerTests
     public void AddTickSchedule_CreateWithInvalidTickRate_ThrowsException(double tickRate)
     {
         // Arrange
-        var tickScheduler = new TickScheduler();
+        var world = World.Create();
+        var simulation = new SimulationContext(world);
+        var tickScheduler = new TickScheduler(simulation);
 
         // Act & Assert
         Should.Throw<ArgumentOutOfRangeException>(() =>
@@ -32,7 +35,9 @@ public class TickSchedulerTests
     public void AddTickSchedule_CreateWithValidTickRate_DoesNotThrow(double tickRate)
     {
         // Arrange
-        var tickScheduler = new TickScheduler();
+        var world = World.Create();
+        var simulation = new SimulationContext(world);
+        var tickScheduler = new TickScheduler(simulation);
 
         // Act & Assert
         Should.NotThrow(() => tickScheduler.AddTickSchedule("Schedule", tickRate));
@@ -45,7 +50,9 @@ public class TickSchedulerTests
     public void AddTickSchedule_CreateWithEmptyName_ThrowsException(string name)
     {
         // Arrange
-        var tickScheduler = new TickScheduler();
+        var world = World.Create();
+        var simulation = new SimulationContext(world);
+        var tickScheduler = new TickScheduler(simulation);
 
         // Act & Assert
         Should.Throw<ArgumentException>(() =>
@@ -58,7 +65,9 @@ public class TickSchedulerTests
     public void AddTickSchedule_CreateWithValidName_DoesNotThrow(string name)
     {
         // Arrange
-        var tickScheduler = new TickScheduler();
+        var world = World.Create();
+        var simulation = new SimulationContext(world);
+        var tickScheduler = new TickScheduler(simulation);
 
         // Act & Assert
         Should.NotThrow(() => tickScheduler.AddTickSchedule(name));
@@ -68,7 +77,9 @@ public class TickSchedulerTests
     public void AddTickSchedule_CreateWithOverwriteDisabled_ThrowsException()
     {
         // Arrange
-        var tickScheduler = new TickScheduler();
+        var world = World.Create();
+        var simulation = new SimulationContext(world);
+        var tickScheduler = new TickScheduler(simulation);
 
         // Act & Assert
         Should.Throw<InvalidOperationException>(() =>
@@ -82,7 +93,9 @@ public class TickSchedulerTests
     public void AddTickSchedule_CreateWithOverwriteEnabled_DoesNotThrow()
     {
         // Arrange
-        var tickScheduler = new TickScheduler();
+        var world = World.Create();
+        var simulation = new SimulationContext(world);
+        var tickScheduler = new TickScheduler(simulation);
 
         // Act & Assert
         Should.NotThrow(() =>
@@ -96,7 +109,9 @@ public class TickSchedulerTests
     public void AddTickSchedule_CreateWithOverwriteEnabled_TickRateOverwritten()
     {
         // Arrange
-        var tickScheduler = new TickScheduler();
+        var world = World.Create();
+        var simulation = new SimulationContext(world);
+        var tickScheduler = new TickScheduler(simulation);
 
         // Act
         tickScheduler.AddTickSchedule("Schedule");
@@ -110,7 +125,9 @@ public class TickSchedulerTests
     public void AddTickSchedule_CreateWithNoTickRateSpecified_DefaultTickRateApplied()
     {
         // Arrange
-        var tickScheduler = new TickScheduler();
+        var world = World.Create();
+        var simulation = new SimulationContext(world);
+        var tickScheduler = new TickScheduler(simulation);
 
         // Act
         tickScheduler.AddTickSchedule("Schedule");
@@ -123,7 +140,9 @@ public class TickSchedulerTests
     public void AddTickSchedule_OverwriteExistingSchedule_ReplacesScheduledBehavior()
     {
         // Arrange
-        var tickScheduler = new TickScheduler();
+        var world = World.Create();
+        var simulation = new SimulationContext(world);
+        var tickScheduler = new TickScheduler(simulation);
         var systemA = new Mock<IPrincipleSystem>();
         var systemB = new Mock<IPrincipleSystem>();
 
@@ -144,7 +163,9 @@ public class TickSchedulerTests
     public void TryGetTickSchedule_LookupExistingScheduleByName_RecoverExistingSchedule()
     {
         // Arrange
-        var tickScheduler = new TickScheduler();
+        var world = World.Create();
+        var simulation = new SimulationContext(world);
+        var tickScheduler = new TickScheduler(simulation);
 
         tickScheduler.AddTickSchedule("Schedule");
 
@@ -160,7 +181,9 @@ public class TickSchedulerTests
     public void RemoveTickSchedule_TryToRemoveRegisteredSchedule_RegisteredScheduleIsRemoved()
     {
         // Arrange
-        var tickScheduler = new TickScheduler();
+        var world = World.Create();
+        var simulation = new SimulationContext(world);
+        var tickScheduler = new TickScheduler(simulation);
 
         tickScheduler.AddTickSchedule("Schedule");
 
@@ -178,7 +201,9 @@ public class TickSchedulerTests
     public void RemoveTickSchedule_TryToRemoveNotRegisteredSchedule_ReturnsFalse()
     {
         // Arrange
-        var tickScheduler = new TickScheduler();
+        var world = World.Create();
+        var simulation = new SimulationContext(world);
+        var tickScheduler = new TickScheduler(simulation);
 
         // Act
         var result = tickScheduler.RemoveTickSchedule("Schedule");
