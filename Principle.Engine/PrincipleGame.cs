@@ -31,6 +31,7 @@ public abstract class PrincipleGame
         finally
         {
             OnShutdown();
+            Context.Dispose();
         }
     }
 

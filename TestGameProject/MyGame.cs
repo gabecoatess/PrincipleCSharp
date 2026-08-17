@@ -43,6 +43,4 @@ public sealed class MyGame : PrincipleGame
         oneHz.AddSystem(new EatPlayerSystem(_world));
         thirtyHz.AddSystem(new HealthSystem(_world, Context.Commands));
     }
-
-    protected override void OnShutdown() => Context.Dispose();
 }

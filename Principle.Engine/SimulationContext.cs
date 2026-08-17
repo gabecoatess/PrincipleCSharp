@@ -12,7 +12,7 @@ public sealed class SimulationContext(World world) : IDisposable
 
     public void Dispose()
     {
-        World.Dispose();
         Commands.Dispose();
+        World.Dispose();
     }
 }
