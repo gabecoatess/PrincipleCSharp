@@ -1,5 +1,3 @@
-using Principle.Contracts;
-
 namespace Principle.Engine;
 
 internal sealed class ScheduledTick

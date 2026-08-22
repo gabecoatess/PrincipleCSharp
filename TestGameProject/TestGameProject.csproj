@@ -7,7 +7,6 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Principle.Contracts\Principle.Contracts.csproj" />
       <ProjectReference Include="..\Principle.Engine\Principle.Engine.csproj" />
     </ItemGroup>
 
@@ -16,9 +15,7 @@
         <GameFiles Include="$(TargetDir)**\*.*" />
     </ItemGroup>
 
-    <Copy SourceFiles="@(GameFiles)"
-          DestinationFiles="@(GameFiles->'..\Principle.Runtime\bin\Debug\net10.0\%(RecursiveDir)%(Filename)%(Extension)')"
-          SkipUnchangedFiles="true" />
+    <Copy SourceFiles="@(GameFiles)" DestinationFiles="@(GameFiles->'..\Principle.Runtime\bin\Debug\net10.0\%(RecursiveDir)%(Filename)%(Extension)')" SkipUnchangedFiles="true" />
     </Target>
 
 </Project>

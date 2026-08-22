@@ -1,5 +1,4 @@
 using Moq;
-using Principle.Contracts;
 using Shouldly;
 
 namespace Principle.Engine.Tests;
