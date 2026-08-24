@@ -13,8 +13,8 @@ public class MyOtherTickSchedule : ITickSchedule
 
         if (_counter % 5 == 0)
         {
-            Application.Quit();
         }
+
         Debug.WriteLine("Half second");
     }
 }
