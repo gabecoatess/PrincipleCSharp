@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using Principle.Engine;
 
 namespace Principle.Runtime;
 
@@ -10,6 +11,11 @@ public static class Program
         {
             ParseArgs(args);
         }
+
+        var application = Application.CreateNew();
+        var applicationThread = new Thread(application.Start);
+
+        applicationThread.Join();
     }
 
     private static void ParseArgs(string[] args)

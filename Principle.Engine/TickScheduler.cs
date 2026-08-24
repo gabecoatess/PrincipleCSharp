@@ -46,8 +46,6 @@ public class TickScheduler
             TickCount++;
             _accumulator -= TargetElapsedTime;
         }
-
-        Thread.Sleep(1);
     }
 
     public void AddTickSchedule(string scheduleName, ITickSchedule tickSchedule, double tickRate = 20.0, bool overwrite = false)
