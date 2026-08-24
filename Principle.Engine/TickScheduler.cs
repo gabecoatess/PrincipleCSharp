@@ -14,7 +14,7 @@ public class TickScheduler
 
     private readonly Dictionary<string, ScheduledTick> _scheduledTicks = [];
 
-    public void Start()
+    internal void Start()
     {
         _lastTimestamp = Stopwatch.GetTimestamp();
         _accumulator = 0.0;
@@ -25,7 +25,7 @@ public class TickScheduler
         }
     }
 
-    public void Tick()
+    internal void Tick()
     {
         var currentTimestamp = Stopwatch.GetTimestamp();
 
