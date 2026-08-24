@@ -2,11 +2,6 @@
   <Project Path="Principle.Editor/Principle.Editor.csproj" />
   <Project Path="Principle.Engine.Tests/Principle.Engine.Tests.csproj" Id="525bae4b-3875-4c6b-bf4f-982ea30f47c8" />
   <Project Path="Principle.Engine/Principle.Engine.csproj" />
-  <Project Path="Principle.Platform/Principle.Platform.csproj" />
-  <Project Path="Principle.Rendering.Abstractions/Principle.Rendering.Abstractions.csproj" />
-  <Project Path="Principle.Rendering.Raylib/Principle.Rendering.Raylib.csproj" />
-  <Project Path="Principle.Rendering.Tests/Principle.Rendering.Tests.csproj" />
-  <Project Path="Principle.Rendering/Principle.Rendering.csproj" />
   <Project Path="Principle.Runtime/Principle.Runtime.csproj" />
   <Project Path="TestGameProject\TestGameProject.csproj" />
 </Solution>

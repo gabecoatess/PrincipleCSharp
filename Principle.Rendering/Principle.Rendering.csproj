@@ -3,7 +3,6 @@
     <TargetFramework>net10.0</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="../Principle.Platform/Principle.Platform.csproj" />
     <ProjectReference Include="../Principle.Rendering.Abstractions/Principle.Rendering.Abstractions.csproj" />
   </ItemGroup>
 </Project>

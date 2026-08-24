@@ -9,7 +9,6 @@
 
     <ItemGroup>
       <ProjectReference Include="..\Principle.Engine\Principle.Engine.csproj" />
-      <ProjectReference Include="..\Principle.Rendering.Raylib\Principle.Rendering.Raylib.csproj" />
       <ProjectReference Include="..\TestGameProject\TestGameProject.csproj" />
     </ItemGroup>
 
