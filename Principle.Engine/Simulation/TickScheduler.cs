@@ -1,6 +1,6 @@
 using System.Diagnostics;
 
-namespace Principle.Engine;
+namespace Principle.Engine.Simulation;
 
 public class TickScheduler
 {
