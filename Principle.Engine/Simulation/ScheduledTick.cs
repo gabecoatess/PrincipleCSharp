@@ -1,4 +1,4 @@
-namespace Principle.Engine;
+namespace Principle.Engine.Simulation;
 
 internal sealed class ScheduledTick
 {

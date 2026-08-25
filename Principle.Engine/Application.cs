@@ -1,26 +1,38 @@
+using Principle.Engine.Simulation;
+
 namespace Principle.Engine;
 
-public static class Application
+public sealed class Application
 {
-    private static IApplicationLifetime? _lifetime;
+    private readonly TickScheduler _tickScheduler;
+    private bool _requestedShutdown;
 
-    public static void Quit() => _lifetime?.RequestShutdown();
-
-    internal static void Attach(IApplicationLifetime lifetime)
+    public static Application CreateNew()
     {
-        if (_lifetime is not null)
-        {
-            throw new InvalidOperationException("[Engine] Application already attached");
-        }
+        var application = new Application();
 
-        _lifetime = lifetime;
+        return application;
     }
 
-    internal static void Detach(IApplicationLifetime lifetime)
+    public void Start()
     {
-        if (ReferenceEquals(_lifetime, lifetime))
+        _tickScheduler.Start();
+
+        while (!_requestedShutdown)
         {
-            _lifetime = null;
+            _tickScheduler.Tick();
+
+            Thread.Sleep(1);
         }
+    }
+
+    public void RequestShutdown()
+    {
+        _requestedShutdown = true;
+    }
+
+    private Application()
+    {
+        _tickScheduler = new TickScheduler();
     }
 }

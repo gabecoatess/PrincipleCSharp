@@ -1,4 +1,4 @@
-namespace Principle.Contracts;
+namespace Principle.Engine.Simulation;
 
 public interface ITickSchedule
 {

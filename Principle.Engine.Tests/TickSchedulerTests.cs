@@ -1,4 +1,5 @@
 using Moq;
+using Principle.Engine.Simulation;
 using Shouldly;
 
 namespace Principle.Engine.Tests;

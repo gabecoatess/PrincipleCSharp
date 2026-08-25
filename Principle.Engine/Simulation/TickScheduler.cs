@@ -1,6 +1,6 @@
 using System.Diagnostics;
 
-namespace Principle.Engine;
+namespace Principle.Engine.Simulation;
 
 public class TickScheduler
 {
@@ -14,7 +14,7 @@ public class TickScheduler
 
     private readonly Dictionary<string, ScheduledTick> _scheduledTicks = [];
 
-    public void Start()
+    internal void Start()
     {
         _lastTimestamp = Stopwatch.GetTimestamp();
         _accumulator = 0.0;
@@ -25,7 +25,7 @@ public class TickScheduler
         }
     }
 
-    public void Tick()
+    internal void Tick()
     {
         var currentTimestamp = Stopwatch.GetTimestamp();
 
@@ -46,8 +46,6 @@ public class TickScheduler
             TickCount++;
             _accumulator -= TargetElapsedTime;
         }
-
-        Thread.Sleep(1);
     }
 
     public void AddTickSchedule(string scheduleName, ITickSchedule tickSchedule, double tickRate = 20.0, bool overwrite = false)
