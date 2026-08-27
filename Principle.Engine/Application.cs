@@ -1,6 +1,5 @@
+using Principle.Engine.Logging;
 using Principle.Engine.Simulation;
-using Serilog;
-using Serilog.Events;
 
 namespace Principle.Engine;
 
@@ -12,16 +11,6 @@ public sealed class Application
     public static Application CreateNew()
     {
         var application = new Application();
-
-        Log.Logger = new LoggerConfiguration()
-            .MinimumLevel.Debug()
-            .Enrich.FromLogContext()
-            .Enrich.WithProperty("Application", "PrincipleEngine")
-            .WriteTo.Debug()
-            .WriteTo.Console(restrictedToMinimumLevel: LogEventLevel.Information)
-            .WriteTo.File("logs/engine-.log", rollingInterval: RollingInterval.Day)
-            .CreateLogger();
-
         return application;
     }
 
@@ -29,7 +18,7 @@ public sealed class Application
     {
         try
         {
-            Log.Information("Starting engine application");
+            EngineLog.Information("Starting engine application");
 
             _tickScheduler.Start();
 
@@ -42,19 +31,19 @@ public sealed class Application
         }
         catch (Exception e)
         {
-            Log.Fatal(e, "An unknown error occurred when attempting to shutdown the engine!");
+            EngineLog.Fatal(e, "An unknown error occurred when attempting to shutdown the engine!");
         }
         finally
         {
-            Log.Information("Ending engine application");
-            Log.CloseAndFlush();
+            EngineLog.Information("Ending engine application");
+            LogCore.Shutdown();
         }
 
     }
 
     public void RequestShutdown()
     {
-        Log.Debug("Shutdown of engine application requested");
+        EngineLog.Debug("Shutdown of engine application requested");
         _requestedShutdown = true;
     }
 
