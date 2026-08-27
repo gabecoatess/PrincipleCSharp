@@ -31,7 +31,8 @@ public sealed class Application
         }
         catch (Exception e)
         {
-            EngineLog.Fatal(e, "An unknown error occurred when attempting to shutdown the engine!");
+            EngineLog.Fatal(e, "A fatal error occurred while the engine was running");
+            throw;
         }
         finally
         {

@@ -7,31 +7,31 @@ internal static class EngineLog
     private static readonly ILogger Log = Logging.LogCore.Instance.ForContext("LogSource", "ENGINE");
 
     #region Verbose
-    public static void Verbose(string messageTemplate) => Log.Verbose(messageTemplate);
+    //public static void Verbose(string messageTemplate) => Log.Verbose(messageTemplate);
 
-    public static void Verbose<T>(string messageTemplate, T value) => Log.Verbose(messageTemplate, value);
+    //public static void Verbose<T>(string messageTemplate, T value) => Log.Verbose(messageTemplate, value);
 
-    public static void Verbose<T0, T1>(string messageTemplate, T0 value0, T1 value1) =>
-        Log.Verbose(messageTemplate, value0, value1);
+    //public static void Verbose<T0, T1>(string messageTemplate, T0 value0, T1 value1) =>
+    //    Log.Verbose(messageTemplate, value0, value1);
 
-    public static void Verbose<T0, T1, T2>(string messageTemplate, T0 value0, T1 value1, T2 value2) =>
-        Log.Verbose(messageTemplate, value0, value1, value2);
+    //public static void Verbose<T0, T1, T2>(string messageTemplate, T0 value0, T1 value1, T2 value2) =>
+    //    Log.Verbose(messageTemplate, value0, value1, value2);
 
-    public static void Verbose(string message, params object?[]? propertyValues) => Log.Verbose(message, propertyValues);
+    //public static void Verbose(string message, params object?[]? propertyValues) => Log.Verbose(message, propertyValues);
 
-    public static void Verbose(Exception? exception, string messageTemplate) => Log.Verbose(exception, messageTemplate);
+    //public static void Verbose(Exception? exception, string messageTemplate) => Log.Verbose(exception, messageTemplate);
 
-    public static void Verbose<T>(Exception? exception, string messageTemplate, T value) =>
-        Log.Verbose(exception, messageTemplate, value);
+    //public static void Verbose<T>(Exception? exception, string messageTemplate, T value) =>
+    //    Log.Verbose(exception, messageTemplate, value);
 
-    public static void Verbose<T0, T1>(Exception? exception, string messageTemplate, T0 value0, T1 value1) =>
-        Log.Verbose(exception, messageTemplate, value0, value1);
+    //public static void Verbose<T0, T1>(Exception? exception, string messageTemplate, T0 value0, T1 value1) =>
+    //    Log.Verbose(exception, messageTemplate, value0, value1);
 
-    public static void Verbose<T0, T1, T2>(Exception? exception, string messageTemplate, T0 value0, T1 value1, T2 value2) =>
-        Log.Verbose(exception, messageTemplate, value0, value1, value2);
+    //public static void Verbose<T0, T1, T2>(Exception? exception, string messageTemplate, T0 value0, T1 value1, T2 value2) =>
+    //    Log.Verbose(exception, messageTemplate, value0, value1, value2);
 
-    public static void Verbose(Exception? exception, string messageTemplate, params object?[]? propertyValues) =>
-        Log.Verbose(exception, messageTemplate, propertyValues);
+    //public static void Verbose(Exception? exception, string messageTemplate, params object?[]? propertyValues) =>
+    //    Log.Verbose(exception, messageTemplate, propertyValues);
     #endregion
 
     #region Debug
