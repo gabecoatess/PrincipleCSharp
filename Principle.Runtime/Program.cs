@@ -15,6 +15,7 @@ public static class Program
         var application = Application.CreateNew();
         var applicationThread = new Thread(application.Start);
 
+        applicationThread.Start();
         applicationThread.Join();
     }
 
