@@ -13,9 +13,9 @@ internal static class LogCore
 
     private static Logger InitializeSerilog()
     {
-        // TODO: Allow minimum level to be configured at runtime (verbose is currently impossible to use without recomp)
+        // TODO: Allow minimum level to be configured at runtime
         return new LoggerConfiguration()
-            .MinimumLevel.Verbose()
+            .MinimumLevel.Debug()
             .Enrich.FromLogContext()
             .Enrich.WithProperty("Application", "PrincipleEngine")
             .Enrich.WithThreadId()
