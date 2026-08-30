@@ -2,9 +2,9 @@ using Serilog;
 
 namespace Principle.Engine.Logging;
 
-internal static class EngineLog
+public static class EngineLog
 {
-    private static readonly ILogger Log = Logging.LogCore.Instance.ForContext("LogSource", "ENGINE");
+    private static readonly ILogger Log = LogCore.Instance;
 
     #region Verbose
     //public static void Verbose(string messageTemplate) => Log.Verbose(messageTemplate);

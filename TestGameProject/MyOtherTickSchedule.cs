@@ -1,4 +1,4 @@
-using System.Diagnostics;
+using Principle.Engine.Logging;
 using Principle.Engine.Simulation;
 
 namespace TestGameProject;
@@ -15,6 +15,6 @@ public class MyOtherTickSchedule : ITickSchedule
         {
         }
 
-        Debug.WriteLine("Half second");
+        EngineLog.Debug("Half second");
     }
 }

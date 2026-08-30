@@ -1,9 +1,9 @@
-using System.Diagnostics;
+using Principle.Engine.Logging;
 using Principle.Engine.Simulation;
 
 namespace TestGameProject;
 
 public class MyTickSchedule : ITickSchedule
 {
-    public void Tick() => Debug.WriteLine($"Full second");
+    public void Tick() => EngineLog.Information($"Full second");
 }
